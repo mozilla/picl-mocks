@@ -1,0 +1,79 @@
+
+<div id="dialog"></div>
+
+<div id="sidechannel-container">
+  <center>Side Channel</center>
+  <div id="sidechannel"></div>
+</div>
+
+<div id="notes-container">
+  <center>Implementor Notes</center>
+  <div id="notes"></div>
+  <p>Current Accounts:</p>
+  <div id="all-accounts"></div>
+</div>
+
+<!-- templates -->
+<div id="templates" class="hidden">
+
+  <div class="t1-create-signin">
+
+    <x-tabbox>
+      <x-tabs>
+        <x-tab selected>Create Account</x-tab>
+        <x-tab>Sign In</x-tab>
+      </x-tabs>
+      <x-tabpanels>
+        <x-tabpanel selected="true">
+          <form class="create">
+            <p>Enter your email address and password to get started.</p>
+            <label>Email: </label>
+            <input type="text" name="email" class="email focus"></input>
+            <br/>
+            <label>Password: </label>
+            <input type="password" name="password"></input>
+            <label>Confirm password: </label>
+            <input type="password" name="password_confirm"></input>
+            <p>By proceeding you agree with <a href="#">Terms of Service</a>
+              and <a href="#">Privacy Policy</a>
+            </p>
+
+            <input type="submit" class="go" value="Create Account"></input>
+          </form>
+        </x-tabpanel>
+
+        <x-tabpanel>
+          <form class="login">
+            <p>Enter your email address and password to get started.</p>
+            <label>Email: </label>
+            <input type="text" name="email" class="email focus"></input>
+
+            <label>Password: </label>
+            <input type="password" name="password"></input>
+
+            <br/>
+            <input type="submit" class="go" value="Sign In"></input>
+          </form>
+        </x-tabpanel>
+      </x-tabpanels>
+    </x-tabbox>
+
+  </div>
+
+  <div class="notes-t1-get-email">
+  </div>
+
+  <div class="t2-signed-in-page">
+      <center><h2>Welcome!<br/> You are successfully signed in as:</h2>
+        <p class="user">test</p>
+        <p>You may close this tab and keep browsin or go to <a href="#" class="prefs">Preferences</a> to manage your account.</p>
+      </center>
+  </div>
+
+  <div class="notes-t2-get-password">
+  </div>
+
+</div>
+
+
+ <script type="text/javascript" src="/javascripts/one.js"></script>
