@@ -1,21 +1,42 @@
 
 setupFunctions["t1-create-signin"] = function() {
-  var form = $('#dialog *[selected=true] form');
-  console.log(form);
-  var verb = form[0].className;
-  form.on("submit", function(e) {
-    state.email = $("#dialog *[selected=true] input.email").val();
-    state.password = $("#dialog *[selected=true] input[name='password']").val();
-    console.log("clicked", state);
-    send(verb, { email: state.email, password: state.password })
+
+  $('#dialog form.login').on("submit", function(e) {
+    state.email = $("#dialog form.login input.email").val();
+    state.password = $("#dialog form.login input[name='password']").val();
+
+    send('login', { email: state.email, password: state.password })
       .then(function(r) {
-        console.log(r);
+        console.log('response', r);
         if (r.success) {
           switchTo("t2-signed-in-page");
         } else {
           // show errors
         }
       });
+
+    e.preventDefault();
+    return false;
+  });
+
+  $('#dialog form.create').on("submit", function(e) {
+    state.email = $("#dialog form.create input.email").val();
+    state.password = $("#dialog form.create input[name='password']").val();
+    var password_confirm = $("#dialog form.create input[name='password']").val();
+
+    send('create', {
+      email: state.email,
+      password: state.password,
+      password_confirm: password_confirm })
+      .then(function(r) {
+        console.log('response', r);
+        if (r.success) {
+          switchTo("t2-signed-in-page");
+        } else {
+          // show errors
+        }
+      });
+
     e.preventDefault();
     return false;
   });

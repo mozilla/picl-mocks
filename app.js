@@ -56,19 +56,28 @@ app.post('/api/create',
     console.log(req.body);
     var user = req.body.email;
     var pass = req.body.password;
-    accounts[user] = { password: pass };
-    req.session.user = user;
 
-    res.json({ success: true });
+    if (accounts[user]) {
+      res.json({ success: false, error: 'AccountExists' });
+    } else {
+      accounts[user] = { password: pass };
+      req.session.user = user;
+
+      res.json({ success: true });
+    }
   });
 
 app.post('/api/login',
   function(req, res) {
+    console.log(req.body);
     var user = req.body.email;
-    var pass = req.body.pass;
+    var pass = req.body.password;
+
     if (accounts[user] && accounts[user].password === pass) {
       req.session.user = user;
       res.json({ success: true });
+    } else {
+      res.json({ success: false, error: "Unauthorized" });
     }
   });
 

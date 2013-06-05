@@ -8,6 +8,8 @@ var setupFunctions = {};
 function send(verb, body) {
   if (!body) body = {};
 
+  console.log('sending', verb, body);
+
   var d = $.Deferred();
   $.ajax({
     type: "POST",
