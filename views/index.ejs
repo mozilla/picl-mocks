@@ -8,6 +8,7 @@
   <head>
     <title>Firefox Home</title>
 
+    <script type="text/javascript" src="/javascripts/jquery-2.0.0.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <style>
       body {
@@ -56,10 +57,24 @@
       #picl-menu-item:hover {
         border: 1px solid rgba(0,0,0,0.2);
       }
+
+      #picl-account {
+        position: absolute;
+        text-aligh: right;
+        right: 20px;
+        top: 10px;
+      }
+      #picl-account a {
+        text-decoration: none;
+      }
     </style>
   </head>
 
   <body>
+    <div id="picl-account">
+      <a href="/flow">Sign in</a>
+    </div>
+
     <img id="search" src="/images/search.png" alt=""/>
 
     <div id="launcher">
@@ -67,6 +82,13 @@
         <a href="/flow" id="picl-menu-item">&nbsp;</a>
       </div>
     </div>
+
+    <script>
+    var user = <%- JSON.stringify(user || null) %>;
+    if (user) {
+      $('#picl-account a').html('Signed in as ' + user);
+    }
+    </script>
   </body>
 </html>
 

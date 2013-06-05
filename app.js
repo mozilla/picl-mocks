@@ -38,12 +38,12 @@ var accounts = {
 
 app.get('/',
   function(req, res) {
-    res.render('index', { layout: false, title: 'Express' });
+    res.render('index', { user: req.session.user, layout: false });
   });
 
 app.get('/flow',
   function(req, res) {
-    res.render('flow', { title: 'Express' });
+    res.render('flow', { user: req.session.user });
   });
 
 app.all('/api/accounts',

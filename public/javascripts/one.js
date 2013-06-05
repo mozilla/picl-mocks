@@ -53,9 +53,25 @@ setupFunctions["t2-signed-in-page"] = function() {
 
 };
 
+setupFunctions["preferences"] = function() {
+  console.log('state', state.email);
+
+  $("a.logout").on("click", function() {
+    send('logout').then(function(r) {
+      window.location = '/';
+    });
+  });
+
+};
+
 $(function() {
   console.log("starting");
-  switchTo("t1-create-signin");
+  if (user) {
+    state.email = user;
+    switchTo("t2-signed-in-page");
+  } else {
+    switchTo("t1-create-signin");
+  }
   //window.setTimeout(function() {switchTo("t2-get-password");}, 5000);
 });
 

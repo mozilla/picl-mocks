@@ -68,7 +68,7 @@ function switchTo(which) {
     var entry = $("#templates ."+which).clone();
     $("#dialog").append(entry).fadeIn("fast", done);
   }
-  $("#sidechannel-container").fadeOut("fast");
+  $("#sidechannel-container").hide().fadeOut("fast");
   $("#dialog").fadeOut("fast", add);
 }
 
