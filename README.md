@@ -1,4 +1,4 @@
 picl-mocks
 ==========
 
-Clone the repo, then run the app with `npm start`.
+Clone the repo, run `npm install`, then run the app with `npm start`.
