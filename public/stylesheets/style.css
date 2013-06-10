@@ -168,3 +168,12 @@ input {
   }
 
 
+#progress-message {
+  padding-top: 30px;
+  color: #999;
+  font-size: 90%;
+}
+
+#progress-meter {
+  width: 300px;
+}

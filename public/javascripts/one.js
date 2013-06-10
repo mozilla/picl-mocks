@@ -51,6 +51,20 @@ setupFunctions["t2-signed-in-page"] = function() {
     switchTo("preferences");
   });
 
+  /** Setup the <progress> JavaScript example **/
+  var progressMeter = $('#progress-meter')[0];
+  progressMeter.min = 0;
+  progressMeter.max = 100;
+  var val = 0;
+
+  var intv = setInterval(function () {
+    progressMeter.value = val += 8 * Math.random();
+    if (val >= 100) {
+      $('#progress-message').html('Synced!');
+      clearInterval(intv);
+    }
+  }, 500);
+
 };
 
 setupFunctions["preferences"] = function() {
