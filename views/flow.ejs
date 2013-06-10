@@ -28,17 +28,17 @@
           <form class="create">
             <p>Enter your email address and password to get started.</p>
             <label>Email: </label>
-            <input type="text" name="email" class="email focus"></input>
+            <input type="text" name="email" class="email focus" />
+            <label>Confirm email </label>
+            <input type="text" name="email_confirm" />
             <br/>
             <label>Password: </label>
-            <input type="password" name="password"></input>
-            <label>Confirm password: </label>
-            <input type="password" name="password_confirm"></input>
+            <input type="password" name="password" />
             <p>By proceeding you agree with <a href="#">Terms of Service</a>
               and <a href="#">Privacy Policy</a>
             </p>
 
-            <input type="submit" class="go" value="Create Account"></input>
+            <input type="submit" class="go" value="Create Account" /> or <a href="#">Sign in</a>
           </form>
         </x-tabpanel>
 
@@ -46,13 +46,17 @@
           <form class="login">
             <p>Enter your email address and password to get started.</p>
             <label>Email: </label>
-            <input type="text" name="email" class="email focus"></input>
+            <input type="text" name="email" class="email focus" />
 
             <label>Password: </label>
-            <input type="password" name="password"></input>
+            <input type="password" name="password" />
+
+            <p>
+              <a href="#" class="forgot">Forgot password?</a>
+            </p>
 
             <br/>
-            <input type="submit" class="go" value="Sign In"></input>
+            <input type="submit" class="go" value="Sign In" /> or <a href="#" class='sign-in'>Create account</a>
           </form>
         </x-tabpanel>
       </x-tabpanels>
