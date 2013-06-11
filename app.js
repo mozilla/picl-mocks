@@ -5,14 +5,17 @@
 
 var express = require('express')
   , http = require('http')
+  , crypto = require('crypto')
   , path = require('path')
+  , email = require('./email')
+  , config = require('./config')
   , expressLayouts = require('express-ejs-layouts')
   ;
 
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', config.get('port'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
@@ -32,7 +35,8 @@ if ('development' == app.get('env')) {
 
 var accounts = {
   known: {
-    password: "password"
+    password: "password",
+    confirmed: true
   }
 };
 
@@ -60,8 +64,10 @@ app.post('/api/create',
     if (accounts[user]) {
       res.json({ success: false, error: 'AccountExists' });
     } else {
-      accounts[user] = { password: pass };
+      accounts[user] = { password: pass, confirmed: false };
+      req.session.token = accounts[user].token = crypto.randomBytes(32).toString('hex');
       req.session.user = user;
+      email.sendNewUserEmail(user, accounts[user].token);
 
       res.json({ success: true });
     }
@@ -86,6 +92,25 @@ app.post('/api/logout',
     req.session.destroy(function() {
       res.json({ success: true });
     });
+  });
+
+app.all('/api/confirm_email',
+  function(req, res) {
+    var email = req.query.email;
+    var token = req.query.token;
+
+    if (!accounts[email]) {
+      res.json({ success: false, error: "UnknownAccount" });
+    } else if (token !== req.session.token) {
+      delete req.session.user;
+      delete req.session.token;
+      // the user will be displayed the create account/sign in page
+      res.redirect('/flow');
+    } else if (token === accounts[email].token) {
+      // account exists and user is using the same browser
+      accounts[req.session.user].confirmed = true;
+      res.redirect('/flow');
+    }
   });
 
 

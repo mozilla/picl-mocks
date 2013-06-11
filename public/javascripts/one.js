@@ -31,7 +31,7 @@ setupFunctions["t1-create-signin"] = function() {
       .then(function(r) {
         console.log('response', r);
         if (r.success) {
-          switchTo("t2-signed-in-page");
+          switchTo("verify");
         } else {
           // show errors
         }
@@ -65,6 +65,10 @@ setupFunctions["t2-signed-in-page"] = function() {
     }
   }, 500);
 
+};
+
+setupFunctions["verify"] = function() {
+  $('#dialog .verify-email').html(state.email);
 };
 
 setupFunctions["preferences"] = function() {
