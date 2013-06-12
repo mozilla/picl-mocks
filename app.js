@@ -114,6 +114,6 @@ app.all('/api/confirm_email',
   });
 
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(config.get('port'), config.get('host'), function(){
+  console.log('Express server listening on port ' + config.get('port'));
 });

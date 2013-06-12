@@ -1,5 +1,8 @@
 {
   "processes": [
     "app.js"
-  ]
+  ],
+  "env": {
+    "CONFIG_FILES": "$HOME/config.json"
+  }
 }
