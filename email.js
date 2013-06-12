@@ -15,7 +15,7 @@ if (config.has('smtp.host')) {
   transport = nodemailer.createTransport('SMTP', {
     host: options.host,
     port: options.port,
-    secureConnection: true, // use SSL
+    //secureConnection: true, // use SSL
     auth: {
       user: options.user,
       pass: options.pass
