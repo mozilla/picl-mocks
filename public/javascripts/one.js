@@ -75,8 +75,23 @@ setupFunctions["preferences"] = function() {
   console.log('state', state.email);
 
   $("a.logout").on("click", function() {
-    send('logout').then(function(r) {
-      window.location = '/';
+    var alert = document.createElement('x-alert');
+    alert.innerHTML = '<h3>PiCL Account</h3><p>Sign out will disconnect the browser with the current account. You can then sign in as another user.';
+    alert.setAttribute('fade-duration', 500);
+    alert.setAttribute('secondary-text', 'Cancel');
+    alert.setAttribute('primary-text', 'Continue');
+    //alert.setAttribute('active', null);
+    document.body.appendChild(alert);
+    console.log(alert);
+
+    alert.addEventListener('hide', function(e) {
+      if (e.buttonType === 'primary') {
+        send('logout').then(function(r) {
+          if (r.success) {
+            window.location = '/';
+          }
+        });
+      }
     });
   });
 
@@ -90,6 +105,7 @@ $(function() {
   } else {
     switchTo("t1-create-signin");
   }
+
   //window.setTimeout(function() {switchTo("t2-get-password");}, 5000);
 });
 
