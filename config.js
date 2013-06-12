@@ -16,4 +16,6 @@ var config = convict({
 
 config.validate();
 
+console.log(config.toString());
+
 module.exports = config;
