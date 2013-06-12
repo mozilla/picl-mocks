@@ -4,9 +4,9 @@ var config = convict({
   public_url: {
     format: 'url',
     default: 'http://localhost:3000/',
-    ENV: 'PUBLIC_URL'
+    env: 'PUBLIC_URL'
   },
-    host: {
+  host: {
     doc: "The ip address the server should bind",
     default: '127.0.0.1',
     format: 'ipaddress',
@@ -15,7 +15,7 @@ var config = convict({
   port: {
     format: 'port',
     default: 3000,
-    ENV: 'PORT',
+    env: 'PORT',
     arg: 'port'
   }
 });
