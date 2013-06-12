@@ -3,7 +3,7 @@ const convict = require('convict');
 var config = convict({
   public_url: {
     format: 'url',
-    default: 'http://localhost:3000/',
+    default: 'http://localhost:3000',
     env: 'PUBLIC_URL'
   },
   host: {

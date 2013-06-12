@@ -47,7 +47,7 @@ Object.keys(templates).forEach(function(type) {
 function send(type, email, secret) {
   var template = templates[type];
 
-  var public_url = config.get('public_url') + 'api/confirm_email';
+  var public_url = config.get('public_url') + '/api/confirm_email';
 
   public_url += '?email=' + email;
   public_url += '&token=' + secret;
