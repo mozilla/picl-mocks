@@ -28,6 +28,9 @@ if (process.env.CONFIG_FILES) {
   config.loadFile(files);
 }
 
+// debugging
+console.log(process.env.PUBLIC_URL);
+
 config.validate();
 
 console.log(config.toString());
