@@ -48,11 +48,15 @@ function refreshAccounts() {
   send("accounts").then(function(accounts) {
     console.log("accounts", accounts);
     $("#all-accounts").empty();
+    var verifyLink;
     for (var name in accounts) {
+      verifyLink = accounts[name].token ?
+          (location.protocol + '//' + location.host + '/api/confirm_email?email=' + name + '&token=' + accounts[name].token) : '';
       // never do this in real code
       var s = ("<li>email: <b>"+name+"</b> / password: <b>"+
            accounts[name].password+"</b>" +
            " (<a href=\"javascript: deleteAccount('" + name + "');\">delete</a>)" +
+           (verifyLink ? ' (<a href="'+verifyLink+'">verify link</a>)' : '') +
            "</li>");
       $("#all-accounts").append($(s));
     };

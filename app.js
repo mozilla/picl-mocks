@@ -123,6 +123,8 @@ app.all('/api/confirm_email',
     } else if (token === accounts[email].token) {
       // account exists and user is using the same browser
       accounts[req.session.user].confirmed = true;
+      req.session.verified = true;
+      delete accounts[req.session.user].token;
       res.redirect('/flow');
     }
   });
