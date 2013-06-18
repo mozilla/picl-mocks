@@ -80,3 +80,11 @@ function showSidechannel(which) {
   container.fadeIn("slow");
   return template;
 }
+
+function toggleAdmin() {
+  $("#notes-container").toggle();
+}
+
+// konami code!
+Mousetrap.bind('up up down down left right left right b a enter', toggleAdmin);
+Mousetrap.bind('mod+e', toggleAdmin);

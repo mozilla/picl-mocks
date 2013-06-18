@@ -106,7 +106,6 @@ $(function() {
     switchTo("t1-create-signin");
   }
 
-  //window.setTimeout(function() {switchTo("t2-get-password");}, 5000);
+  $("#notes-container").toggle();
 });
 
-console.log('WTF');

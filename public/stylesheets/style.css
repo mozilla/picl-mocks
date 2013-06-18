@@ -54,6 +54,13 @@ input {
   font-size: 18px;
 }
 
+.close {
+  background: white;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
 
 /* TABBOX DEMO */
 
