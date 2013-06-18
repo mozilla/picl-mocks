@@ -36,26 +36,42 @@ function enterMeansClick(inputSelector, buttonSelector) {
   });
 }
 
+function deleteAccount(name) {
+  console.log('deleting', name);
+
+  send('delete', {email: name}).then(refreshAccounts);
+}
+
+function refreshAccounts() {
+  console.log('refreshing accounts');
+
+  send("accounts").then(function(accounts) {
+    console.log("accounts", accounts);
+    $("#all-accounts").empty();
+    for (var name in accounts) {
+      // never do this in real code
+      var s = ("<li>email: <b>"+name+"</b> / password: <b>"+
+           accounts[name].password+"</b>" +
+           " (<a href=\"javascript: deleteAccount('" + name + "');\">delete</a>)" +
+           "</li>");
+      $("#all-accounts").append($(s));
+    };
+  });
+}
+
 function switchTo(which) {
   console.log('switching to ', which);
 
   function done() {
     var notes = $("#templates .notes-"+which);
-    if (notes.length)
+    if (notes.length) {
       $("#notes").empty().append(notes.clone());
-    send("accounts").then(function(accounts) {
-      console.log("accounts", accounts);
-      $("#all-accounts").empty();
-      for (var name in accounts) {
-        // never do this in real code
-        var s = ("<li>email: <b>"+name+"</b> / password: <b>"+
-             accounts[name].password+"</b></li>");
-        $("#all-accounts").append($(s));
-      };
-    });
+    }
+    refreshAccounts();
     var focus = $("#dialog .focus");
-    if (focus.length == 1)
+    if (focus.length == 1) {
       focus.focus();
+    }
     currentlyShowing = which;
     console.log(which);
     var f = setupFunctions[which];

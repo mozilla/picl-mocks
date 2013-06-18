@@ -94,6 +94,20 @@ app.post('/api/logout',
     });
   });
 
+app.post('/api/delete',
+  function(req, res) {
+    console.log('deleting???', req.body);
+    var user = req.body.email;
+    delete accounts[user];
+    if (req.session.user == user) {
+      req.session.destroy(function() {
+        res.json({ success: true });
+      });
+    } else {
+      res.json({ success: true });
+    }
+  });
+
 app.all('/api/confirm_email',
   function(req, res) {
     var email = req.query.email;
