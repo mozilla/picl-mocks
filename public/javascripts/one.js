@@ -99,7 +99,7 @@ setupFunctions["preferences"] = function() {
 
 $(function() {
   console.log("starting");
-  if (user) {
+  if (user && verified) {
     state.email = user;
     switchTo("t2-signed-in-page");
   } else {

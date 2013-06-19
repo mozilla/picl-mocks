@@ -35,19 +35,29 @@ if ('development' == app.get('env')) {
 
 var accounts = {
   known: {
-    password: "password",
-    confirmed: true
+    password: "password"
   }
 };
 
+function isVerified(user) {
+  return accounts[user] && !accounts[user].token;
+}
+
 app.get('/',
   function(req, res) {
-    res.render('index', { user: req.session.user, layout: false });
+    res.render('index', {
+      user: req.session.user,
+      verified: isVerified(req.session.user),
+      layout: false
+    });
   });
 
 app.get('/flow',
   function(req, res) {
-    res.render('flow', { user: req.session.user });
+    res.render('flow', {
+      user: req.session.user,
+      verified: isVerified(req.session.user)
+    });
   });
 
 app.all('/api/accounts',
@@ -64,7 +74,7 @@ app.post('/api/create',
     if (accounts[user]) {
       res.json({ success: false, error: 'AccountExists' });
     } else {
-      accounts[user] = { password: pass, confirmed: false };
+      accounts[user] = { password: pass };
       req.session.token = accounts[user].token = crypto.randomBytes(32).toString('hex');
       req.session.user = user;
       email.sendNewUserEmail(user, accounts[user].token);
@@ -96,7 +106,6 @@ app.post('/api/logout',
 
 app.post('/api/delete',
   function(req, res) {
-    console.log('deleting???', req.body);
     var user = req.body.email;
     delete accounts[user];
     if (req.session.user == user) {
@@ -122,8 +131,6 @@ app.all('/api/confirm_email',
       res.redirect('/flow');
     } else if (token === accounts[email].token) {
       // account exists and user is using the same browser
-      accounts[req.session.user].confirmed = true;
-      req.session.verified = true;
       delete accounts[req.session.user].token;
       res.redirect('/flow');
     }

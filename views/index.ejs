@@ -85,7 +85,8 @@
 
     <script>
     var user = <%- JSON.stringify(user || null) %>;
-    if (user) {
+    var verified = <%- JSON.stringify(verified || false) %>;
+    if (user && verified) {
       $('#picl-account a').html('Signed in as ' + user);
     }
     </script>
