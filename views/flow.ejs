@@ -27,7 +27,6 @@
       <x-tabpanels>
         <x-tabpanel selected="true">
           <form class="create">
-            <p>Enter your email address and password to get started.</p>
             <label>Email: </label>
             <input type="text" name="email" class="email focus" />
             <label>Confirm email </label>
@@ -39,13 +38,12 @@
               and <a href="#">Privacy Policy</a>
             </p>
 
-            <input type="submit" class="go" value="Create Account" /> or <a href="#">Sign in</a>
+            <input type="submit" class="go" value="Create Account" />
           </form>
         </x-tabpanel>
 
         <x-tabpanel>
           <form class="login">
-            <p>Enter your email address and password to get started.</p>
             <label>Email: </label>
             <input type="text" name="email" class="email focus" />
 
@@ -57,7 +55,7 @@
             </p>
 
             <br/>
-            <input type="submit" class="go" value="Sign In" /> or <a href="#" class='sign-in'>Create account</a>
+            <input type="submit" class="go" value="Sign In" />
           </form>
         </x-tabpanel>
       </x-tabpanels>
@@ -81,12 +79,9 @@
   </div>
 
   <div class="verify">
-    <h2>Confirm your email address</h2>
+    <h2>Please verify your email at:</h2>
     <p>
-      Check your email at <strong class='verify-email'></strong>.
-    </p>
-    <p>
-      Click the link in the confirmation email. You'll then immediately be signed in to PiCL.
+      <strong class='verify-email'></strong>.
     </p>
   </div>
 

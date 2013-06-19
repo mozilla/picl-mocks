@@ -9,7 +9,7 @@
             body{-webkit-text-size-adjust:none;} /* Prevent Webkit platforms from changing default text sizes. */
 
             body{
-              background: #45505b;
+              background: #eee;
               margin:0;
               padding:0;
               width:100% !important;
@@ -37,6 +37,10 @@
               line-height: 1.5;
             }
 
+            h1 {
+              color: #45505b;
+            }
+
             h2{
               font-size: 18px;
               margin: 20px 0 15px;
@@ -56,8 +60,8 @@
       <tr style="margin: 0;
         padding: 0;
         height: 100% !important;
-        width: 100% !important; 
-        background: #45505b;
+        width: 100% !important;
+        background: #eee;
         -webkit-text-size-adjust:none;
         font-family: Helvetica, Arial, sans-serif;
         font-size: 14px;
@@ -80,14 +84,14 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #fff; border-radius: 3px; margin-bottom: 60px;">
                   <tr>
                     <td align="left" valign="top" class="email-content" style="border-collapse: collapse;  padding: 30px;">
-                        <p><%= 'Thank you for using PiCL.' %></p>
-
-                      <p><a href="<%= link %>" style="color: #3b9bda; font-weight: bold;"><%= 'Click to confirm this email address and sign in to PiCL' %>.</a></p>
+                        <p><%= 'Welcome!' %></p>
+                      <p>Open the following link in Firefox:</p>
+                      <p><a href="<%= link %>" style="color: #3b9bda;"><%= link %></a></p>
 
                       <p><%= 'Note: If you are NOT trying to sign into PiCL, please ignore this email.' %></p>
 
                       <p><%= 'Thank you,' %><br />
-                      <%= 'The PiCL team' %></p>
+                      <%= 'The PiCL Team' %></p>
                     </td>
                   </tr>
                 </table><!-- #content -->
