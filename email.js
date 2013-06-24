@@ -29,10 +29,17 @@ if (config.has('smtp.host')) {
 const templates = {
   "new": {
     flowName: "flow",
-    landing: 'verify_email_address',
+    landing: 'confirm_email',
     subject: 'Confirm email address for PiCL',
     text: fs.readFileSync(path.join(TEMPLATE_PATH, 'new.ejs')),
     html: fs.readFileSync(path.join(TEMPLATE_PATH, 'new.html.ejs'))
+  },
+  "reset": {
+    flowName: "flow",
+    landing: 'confirm_password',
+    subject: 'Reset password for PiCL',
+    text: fs.readFileSync(path.join(TEMPLATE_PATH, 'reset.ejs')),
+    html: fs.readFileSync(path.join(TEMPLATE_PATH, 'reset.html.ejs'))
   }
 };
 
@@ -44,17 +51,16 @@ Object.keys(templates).forEach(function(type) {
   }
 });
 
-function send(type, email, secret) {
+function send(type, email, secret, params) {
   var template = templates[type];
 
-  var public_url = config.get('public_url') + '/api/confirm_email';
+  var public_url = config.get('public_url') + '/' + template.landing;
 
-  public_url += '?email=' + email;
-  public_url += '&token=' + secret;
-  public_url += '&flow=' + template.flowName;
+  public_url += '?email=' + email + (params || '');
 
   var templateArgs = {
-    link: public_url
+    link: public_url,
+    secret: secret
   };
 
   // setup e-mail data with unicode symbols
@@ -80,6 +86,10 @@ function send(type, email, secret) {
 }
 
 exports.sendNewUserEmail = function(email, secret) {
-  send('new', email, secret);
+  var params = '&token=' + secret;
+  send('new', email, secret, params);
 };
 
+exports.sendResetEmail = function(email, code) {
+  send('reset', email, code);
+};

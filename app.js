@@ -52,11 +52,12 @@ app.get('/',
     });
   });
 
-app.get('/flow',
+app.get('/flow/:page?',
   function(req, res) {
     res.render('flow', {
       user: req.session.user,
-      verified: isVerified(req.session.user)
+      verified: isVerified(req.session.user),
+      page: req.params.page
     });
   });
 
@@ -67,7 +68,6 @@ app.all('/api/accounts',
 
 app.post('/api/create',
   function(req, res) {
-    console.log(req.body);
     var user = req.body.email;
     var pass = req.body.password;
 
@@ -79,13 +79,14 @@ app.post('/api/create',
       req.session.user = user;
       email.sendNewUserEmail(user, accounts[user].token);
 
+      console.log(accounts);
+
       res.json({ success: true });
     }
   });
 
 app.post('/api/login',
   function(req, res) {
-    console.log(req.body);
     var user = req.body.email;
     var pass = req.body.password;
 
@@ -117,18 +118,19 @@ app.post('/api/delete',
     }
   });
 
-app.all('/api/confirm_email',
+app.all('/confirm_email',
   function(req, res) {
     var email = req.query.email;
     var token = req.query.token;
 
     if (!accounts[email]) {
-      res.json({ success: false, error: "UnknownAccount" });
-    } else if (token !== req.session.token) {
-      delete req.session.user;
-      delete req.session.token;
-      // the user will be displayed the create account/sign in page
       res.redirect('/flow');
+    } else if (token !== req.session.token
+      && token == accounts[email].token) {
+      // user is not using the original Firefox browser
+      delete req.session.token;
+      delete accounts[req.session.user].token;
+      res.redirect('/flow/verified');
     } else if (token === accounts[email].token) {
       // account exists and user is using the same browser
       delete accounts[req.session.user].token;
@@ -136,6 +138,54 @@ app.all('/api/confirm_email',
     }
   });
 
+app.post('/api/reset_code',
+  function(req, res) {
+    var user = req.body.email;
+
+    if (!accounts[user]) {
+      return res.json({ success: false, message: "No such user: " + user });
+    }
+
+    accounts[user].reset_code = Math.floor(Math.random() * 90000000) + 10000000; ;
+    email.sendResetEmail(user, accounts[user].reset_code);
+
+    res.json({ success: true });
+  });
+
+app.all('/api/confirm_reset_code',
+  function(req, res) {
+    var email = req.body.email;
+    var code = parseInt(req.body.code, 10);
+
+    if (!accounts[email]) {
+      res.json({ success: false, error: "UnknownAccount" });
+    } else if (code === accounts[email].reset_code) {
+      delete accounts[email].reset_code;
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, error: "BadCode" });
+    }
+  });
+
+app.post('/api/new_password',
+  function(req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+    var confirm_password = req.body.confirm_password;
+
+    if (!accounts[email]) {
+      res.json({ success: false, error: "UnknownAccount" });
+
+    } else if (password != confirm_password) {
+      res.json({ success: false, error: "PasswordMismatch" });
+
+    } else if (password) {
+      accounts[email].password = password;
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, error: "MissingPassword" });
+    }
+  });
 
 http.createServer(app).listen(config.get('port'), config.get('host'), function(){
   console.log('Express server listening on port ' + config.get('port'));

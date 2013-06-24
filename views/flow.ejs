@@ -51,7 +51,7 @@
             <input type="password" name="password" />
 
             <p>
-              <a href="#" class="forgot">Forgot password?</a>
+              <a href="#" class="forgot" data-page="reset-password">Forgot password?</a>
             </p>
 
             <br/>
@@ -83,6 +83,57 @@
     <p>
       <strong class='verify-email'></strong>.
     </p>
+  </div>
+
+  <div class="verified">
+    <h3>Email verified!</h3>
+    <h3>Now go to Firefox and sign in!</h3>
+  </div>
+
+  <div class="reset-password">
+    <p>
+      Forgot your password? No worries!<br/>
+      Reset your password!
+    </p>
+    <form class="reset">
+      <label>Your Email:
+        <input type="text" name="email" class="email focus" />
+      </label>
+      <p>
+      <input type="submit" class="go right" value="Reset Password" />
+    </form>
+  </div>
+
+  <div class="confirm-reset-code">
+    <p>
+      Reset password email sent to: <span class="email"></span>
+    </p>
+    <form class="reset_code">
+      <label>Enter the code in the email:</label>
+        <input type="text" name="code" class="code focus" />
+      <p>
+      <input type="submit" class="go right" value="Next" />
+    </form>
+  </div>
+
+  <div class="new-password">
+    <form class="new_password">
+      <p>
+        Create new password:
+      </p>
+      <input type="password" name="password" placeholder="new password" class="focus" /> <br/>
+      <input type="password" name="confirm_password" placeholder="confirm password" />
+      <p>
+      <input type="submit" class="go right" value="Reset" />
+    </form>
+  </div>
+
+  <div class="reset-success">
+    <p>You reset your password successfully!
+    <p>Remember to sign in using your new password on your other devices so they can be all synced!
+
+    <ul class="devices">
+    </ul>
   </div>
 
   <div class="preferences">

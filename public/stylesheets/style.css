@@ -185,3 +185,15 @@ input {
 #progress-meter {
   width: 300px;
 }
+
+.reset, .new-password, .reset-success {
+  width: 400px;
+}
+
+.reset .email, .new-password input[type="password"] {
+  width: 300px;
+}
+
+.right {
+  float: right;
+}

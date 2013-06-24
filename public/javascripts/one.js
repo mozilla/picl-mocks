@@ -71,6 +71,76 @@ setupFunctions["verify"] = function() {
   $('#dialog .verify-email').html(state.email);
 };
 
+
+setupFunctions["reset-password"] = function() {
+  $('#dialog form.reset').on('submit', function(e) {
+    console.log('reset form!!!', e, this.email);
+    var email = this.email.value;
+
+    // send code email
+    send('reset_code', { email: email })
+    .then(function (r) {
+      console.log('reset form return!!!', r);
+      if (r.success) {
+        // switch to confirm code page
+        state.email = email;
+        switchTo('confirm-reset-code');
+      }
+    });
+
+    e.preventDefault();
+    return false;
+  });
+};
+
+setupFunctions["confirm-reset-code"] = function() {
+  $('#dialog .email').html(state.email);
+
+  $('#dialog form.reset_code').on('submit', function(e) {
+    var code = this.code.value;
+    console.log('confirm reset form!!!', e);
+
+    // send code email
+    send('confirm_reset_code', {
+      email: state.email,
+      code: code
+    })
+    .then(function (r) {
+      console.log('reset back!', r);
+      if (r.success) {
+        // switch to confirm code page
+        switchTo('new-password');
+      }
+    });
+
+    e.preventDefault();
+    return false;
+  });
+};
+
+setupFunctions["new-password"] = function() {
+  $('#dialog form.new_password').on('submit', function(e) {
+    var password = this.password.value;
+    var confirm_password = this.confirm_password.value;
+
+    // send code email
+    send('new_password', {
+      email: state.email,
+      password: password,
+      confirm_password: confirm_password
+    })
+    .then(function (r) {
+      if (r.success) {
+        // switch to confirm code page
+        switchTo('reset-success');
+      }
+    });
+
+    e.preventDefault();
+    return false;
+  });
+};
+
 setupFunctions["preferences"] = function() {
   console.log('state', state.email);
 
@@ -99,13 +169,22 @@ setupFunctions["preferences"] = function() {
 
 $(function() {
   console.log("starting");
-  if (user && verified) {
-    state.email = user;
+  state.email = user;
+  if (page) {
+    switchTo(page);
+  } else if (user && verified) {
     switchTo("t2-signed-in-page");
   } else {
     switchTo("t1-create-signin");
   }
 
   $("#notes-container").toggle();
+
+  $("#dialog").on('click', 'a[data-page]', function(e) {
+    var page = $(this).data('page');
+    switchTo(page);
+    e.preventDefault();
+    return false;
+  });
 });
 
