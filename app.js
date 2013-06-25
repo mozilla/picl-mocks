@@ -165,7 +165,7 @@ app.all('/confirm_email',
       && token == accounts[email].token) {
       // user is not using the original Firefox browser
       delete req.session.token;
-      delete accounts[req.session.user].token;
+      delete accounts[email].token;
       res.redirect('/flow/verified');
     } else if (token === accounts[email].token) {
       // account exists and user is using the same browser
