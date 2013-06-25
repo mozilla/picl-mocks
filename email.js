@@ -28,18 +28,22 @@ if (config.has('smtp.host')) {
 // a map of all the different emails we send
 const templates = {
   "new": {
-    flowName: "flow",
     landing: 'confirm_email',
     subject: 'Confirm email address for PiCL',
     text: fs.readFileSync(path.join(TEMPLATE_PATH, 'new.ejs')),
     html: fs.readFileSync(path.join(TEMPLATE_PATH, 'new.html.ejs'))
   },
   "reset": {
-    flowName: "flow",
     landing: 'confirm_password',
     subject: 'Reset password for PiCL',
     text: fs.readFileSync(path.join(TEMPLATE_PATH, 'reset.ejs')),
     html: fs.readFileSync(path.join(TEMPLATE_PATH, 'reset.html.ejs'))
+  },
+  "newCode": {
+    landing: 'flow/confirm_email_code',
+    subject: 'Confirm email address for PiCL',
+    text: fs.readFileSync(path.join(TEMPLATE_PATH, 'new2.ejs')),
+    html: fs.readFileSync(path.join(TEMPLATE_PATH, 'new2.html.ejs'))
   }
 };
 
@@ -92,4 +96,8 @@ exports.sendNewUserEmail = function(email, secret) {
 
 exports.sendResetEmail = function(email, code) {
   send('reset', email, code);
+};
+
+exports.sendNewUserEmailCode = function(email, secret) {
+  send('newCode', email, secret);
 };

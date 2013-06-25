@@ -58,6 +58,7 @@ function refreshAccounts() {
            " (<a href=\"javascript: deleteAccount('" + name + "');\">delete</a>)" +
            (verifyLink ? ' (<a href="'+verifyLink+'">verify link</a>)' : '') +
            (accounts[name].reset_code ? ' (reset: ' + accounts[name].reset_code + ')' : '') +
+           (accounts[name].confirm_code ? ' (confirm: ' + accounts[name].confirm_code + ')' : '') +
            "</li>");
       $("#all-accounts").append($(s));
     };

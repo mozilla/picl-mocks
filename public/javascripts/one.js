@@ -23,19 +23,33 @@ setupFunctions["t1-create-signin"] = function() {
     state.email = $("#dialog form.create input.email").val();
     state.password = $("#dialog form.create input[name='password']").val();
     var password_confirm = $("#dialog form.create input[name='password']").val();
-
-    send('create', {
+    var creds = {
       email: state.email,
       password: state.password,
-      password_confirm: password_confirm })
-      .then(function(r) {
-        console.log('response', r);
-        if (r.success) {
-          switchTo("verify");
-        } else {
-          // show errors
-        }
-      });
+      password_confirm: password_confirm
+    };
+
+    if (flow === 'one') {
+      send('create', creds)
+        .then(function(r) {
+          console.log('response', r);
+          if (r.success) {
+            switchTo("verify");
+          } else {
+            // show errors
+          }
+        });
+      } else if(flow === 'two') {
+        send('create_code', creds)
+          .then(function(r) {
+            console.log('response', r);
+            if (r.success) {
+              switchTo("confirm-email-code");
+            } else {
+              // show errors
+            }
+          });
+      }
 
     e.preventDefault();
     return false;
@@ -141,6 +155,28 @@ setupFunctions["new-password"] = function() {
   });
 };
 
+setupFunctions["confirm-email-code"] = function() {
+  $('#dialog .email').html(state.email);
+
+  $('#dialog form.email_code').on('submit', function(e) {
+    var code = this.code.value;
+
+    // send code email
+    send('confirm_email_code', {
+      email: state.email,
+      code: code
+    })
+    .then(function (r) {
+      console.log('code confirm back!', r);
+      if (r.success) {
+        switchTo('t2-signed-in-page');
+      }
+    });
+
+    e.preventDefault();
+    return false;
+  });
+};
 setupFunctions["preferences"] = function() {
   console.log('state', state.email);
 
@@ -170,6 +206,8 @@ setupFunctions["preferences"] = function() {
 $(function() {
   console.log("starting");
   state.email = user;
+  state.flow = flow;
+
   if (page) {
     switchTo(page);
   } else if (user && verified) {

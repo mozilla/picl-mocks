@@ -57,7 +57,8 @@ app.get('/flow/:page?',
     res.render('flow', {
       user: req.session.user,
       verified: isVerified(req.session.user),
-      page: req.params.page
+      page: req.params.page,
+      flow: req.query.flow || 'one'
     });
   });
 
@@ -83,6 +84,41 @@ app.post('/api/create',
 
       res.json({ success: true });
     }
+  });
+
+app.post('/api/create_code',
+  function(req, res) {
+    var user = req.body.email;
+    var pass = req.body.password;
+
+    if (accounts[user]) {
+      res.json({ success: false, error: 'AccountExists' });
+    } else {
+      accounts[user] = { password: pass };
+      req.session.confirm_code = accounts[user].confirm_code = Math.floor(Math.random() * 90000000) + 10000000;
+      req.session.user = user;
+      email.sendNewUserEmailCode(user, accounts[user].confirm_code);
+
+      console.log(accounts);
+
+      res.json({ success: true });
+    }
+  });
+
+app.post('/api/reverify',
+  function(req, res) {
+    var user = req.body.email;
+    if (!accounts[user]) {
+      res.json({ success: false, message: "No such user" });
+    } else if (!accounts[user].token) {
+      res.json({ success: false, message: "No token found for this user" });
+    }
+
+    req.session.token = accounts[user].token;
+    req.session.user = user;
+    email.sendNewUserEmail(user, accounts[user].token);
+
+    res.json({ success: true });
   });
 
 app.post('/api/login',
@@ -138,6 +174,21 @@ app.all('/confirm_email',
     }
   });
 
+app.all('/api/confirm_email_code',
+  function(req, res) {
+    var email = req.body.email;
+    var code = parseInt(req.body.code, 10);
+
+    if (!accounts[email]) {
+      res.json({ success: false, error: "UnknownAccount" });
+    } else if (code === accounts[email].confirm_code) {
+      delete accounts[email].confirm_code;
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, error: "BadCode" });
+    }
+  });
+
 app.post('/api/reset_code',
   function(req, res) {
     var user = req.body.email;
@@ -146,7 +197,7 @@ app.post('/api/reset_code',
       return res.json({ success: false, message: "No such user: " + user });
     }
 
-    accounts[user].reset_code = Math.floor(Math.random() * 90000000) + 10000000; ;
+    accounts[user].reset_code = Math.floor(Math.random() * 90000000) + 10000000;
     email.sendResetEmail(user, accounts[user].reset_code);
 
     res.json({ success: true });
