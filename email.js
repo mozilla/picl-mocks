@@ -29,19 +29,19 @@ if (config.has('smtp.host')) {
 const templates = {
   "new": {
     landing: 'confirm_email',
-    subject: 'Confirm email address for PiCL',
+    subject: 'Confirm email address for Firefox Sync',
     text: fs.readFileSync(path.join(TEMPLATE_PATH, 'new.ejs')),
     html: fs.readFileSync(path.join(TEMPLATE_PATH, 'new.html.ejs'))
   },
   "reset": {
     landing: 'confirm_password',
-    subject: 'Reset password for PiCL',
+    subject: 'Reset password for Firefox Sync',
     text: fs.readFileSync(path.join(TEMPLATE_PATH, 'reset.ejs')),
     html: fs.readFileSync(path.join(TEMPLATE_PATH, 'reset.html.ejs'))
   },
   "newCode": {
     landing: 'flow/confirm_email_code',
-    subject: 'Confirm email address for PiCL',
+    subject: 'Confirm email address for Firefox Sync',
     text: fs.readFileSync(path.join(TEMPLATE_PATH, 'new2.ejs')),
     html: fs.readFileSync(path.join(TEMPLATE_PATH, 'new2.html.ejs'))
   }
@@ -69,7 +69,7 @@ function send(type, email, secret, params) {
 
   // setup e-mail data with unicode symbols
   var mailOptions = {
-    from: 'PiCL <no-reply@lcip.org>', // sender address
+    from: 'Firefox Sync <no-reply@lcip.org>', // sender address
     to: email, // list of receivers
     subject: template.subject, // Subject line
     text: template.text(templateArgs) // plaintext body
