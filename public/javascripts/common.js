@@ -51,7 +51,11 @@ function refreshAccounts() {
     var verifyLink;
     for (var name in accounts) {
       verifyLink = accounts[name].token ?
-          (location.protocol + '//' + location.host + '/confirm_email?email=' + name + '&token=' + accounts[name].token) : '';
+          (location.protocol + '//' + location.host +
+          '/confirm_email?email=' + name +
+          '&token=' + accounts[name].token +
+          '&verifyLanding=' + state.flow.verifyLanding
+          ) : '';
       // never do this in real code
       var s = ("<li>email: <b>"+name+"</b> / password: <b>"+
            accounts[name].password+"</b>" +

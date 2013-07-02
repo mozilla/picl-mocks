@@ -26,10 +26,11 @@ setupFunctions["t1-create-signin"] = function() {
     var creds = {
       email: state.email,
       password: state.password,
-      password_confirm: password_confirm
+      password_confirm: password_confirm,
+      landing: state.flow.verifyLanding
     };
 
-    if (flow === 'one') {
+    if (flow.verify === 'link') {
       send('create', creds)
         .then(function(r) {
           console.log('response', r);
@@ -39,7 +40,7 @@ setupFunctions["t1-create-signin"] = function() {
             // show errors
           }
         });
-      } else if(flow === 'two') {
+      } else if(flow.verify === 'pin') {
         send('create_code', creds)
           .then(function(r) {
             console.log('response', r);
@@ -182,7 +183,7 @@ setupFunctions["preferences"] = function() {
 
   $("a.logout").on("click", function() {
     var alert = document.createElement('x-alert');
-    alert.innerHTML = '<h3>PiCL Account</h3><p>Sign out will disconnect the browser with the current account. You can then sign in as another user.';
+    alert.innerHTML = '<h3>Sync Account</h3><p>Sign out will disconnect the browser with the current account. You can then sign in as another user.';
     alert.setAttribute('fade-duration', 500);
     alert.setAttribute('secondary-text', 'Cancel');
     alert.setAttribute('primary-text', 'Continue');

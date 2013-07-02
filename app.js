@@ -43,6 +43,13 @@ function isVerified(user) {
   return accounts[user] && !accounts[user].token;
 }
 
+function flowParams(params, session) {
+  return {
+    verify: params.verify || session.verify || 'link',
+    verifyLanding: params.verifyLanding || session.verifyLanding || 'verified'
+  };
+}
+
 app.get('/',
   function(req, res) {
     res.render('index', {
@@ -58,7 +65,7 @@ app.get('/flow/:page?',
       user: req.session.user,
       verified: isVerified(req.session.user),
       page: req.params.page,
-      flow: req.query.flow || 'one'
+      flow: flowParams(req.query, req.session)
     });
   });
 
@@ -72,13 +79,15 @@ app.post('/api/create',
     var user = req.body.email;
     var pass = req.body.password;
 
+    console.log('req body', req.body);
+
     if (accounts[user]) {
-      res.json({ success: false, error: 'AccountExists' });
+      res.json(400, { success: false, error: 'AccountExists' });
     } else {
       accounts[user] = { password: pass };
       req.session.token = accounts[user].token = crypto.randomBytes(32).toString('hex');
       req.session.user = user;
-      email.sendNewUserEmail(user, accounts[user].token);
+      email.sendNewUserEmail(user, accounts[user].token, req.body.landing);
 
       console.log(accounts);
 
@@ -130,7 +139,7 @@ app.post('/api/login',
       req.session.user = user;
       res.json({ success: true });
     } else {
-      res.json({ success: false, error: "Unauthorized" });
+      res.json(401, { success: false, error: "Unauthorized" });
     }
   });
 
@@ -158,6 +167,9 @@ app.all('/confirm_email',
   function(req, res) {
     var email = req.query.email;
     var token = req.query.token;
+    var landing = req.query.verifyLanding;
+
+    console.log('landing', landing);
 
     if (!accounts[email]) {
       res.redirect('/flow');
@@ -166,11 +178,13 @@ app.all('/confirm_email',
       // user is not using the original Firefox browser
       delete req.session.token;
       delete accounts[email].token;
-      res.redirect('/flow/verified');
+      res.redirect('/flow/' + landing);
     } else if (token === accounts[email].token) {
       // account exists and user is using the same browser
       delete accounts[req.session.user].token;
       res.redirect('/flow');
+    } else {
+      res.json(400, { success: false, error: "BadToken" });
     }
   });
 
@@ -180,12 +194,12 @@ app.all('/api/confirm_email_code',
     var code = parseInt(req.body.code, 10);
 
     if (!accounts[email]) {
-      res.json({ success: false, error: "UnknownAccount" });
+      res.json(404, { success: false, error: "UnknownAccount" });
     } else if (code === accounts[email].confirm_code) {
       delete accounts[email].confirm_code;
       res.json({ success: true });
     } else {
-      res.json({ success: false, error: "BadCode" });
+      res.json(400, { success: false, error: "BadCode" });
     }
   });
 
@@ -209,12 +223,12 @@ app.all('/api/confirm_reset_code',
     var code = parseInt(req.body.code, 10);
 
     if (!accounts[email]) {
-      res.json({ success: false, error: "UnknownAccount" });
+      res.json(404, { success: false, error: "UnknownAccount" });
     } else if (code === accounts[email].reset_code) {
       delete accounts[email].reset_code;
       res.json({ success: true });
     } else {
-      res.json({ success: false, error: "BadCode" });
+      res.json(400, { success: false, error: "BadCode" });
     }
   });
 
@@ -225,16 +239,16 @@ app.post('/api/new_password',
     var confirm_password = req.body.confirm_password;
 
     if (!accounts[email]) {
-      res.json({ success: false, error: "UnknownAccount" });
+      res.json(404, { success: false, error: "UnknownAccount" });
 
     } else if (password != confirm_password) {
-      res.json({ success: false, error: "PasswordMismatch" });
+      res.json(400, { success: false, error: "PasswordMismatch" });
 
     } else if (password) {
       accounts[email].password = password;
       res.json({ success: true });
     } else {
-      res.json({ success: false, error: "MissingPassword" });
+      res.json(400, { success: false, error: "MissingPassword" });
     }
   });
 

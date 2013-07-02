@@ -89,8 +89,8 @@ function send(type, email, secret, params) {
   });
 }
 
-exports.sendNewUserEmail = function(email, secret) {
-  var params = '&token=' + secret;
+exports.sendNewUserEmail = function(email, secret, landFlow) {
+  var params = '&token=' + secret + '&verifyLanding=' + landFlow;
   send('new', email, secret, params);
 };
 
