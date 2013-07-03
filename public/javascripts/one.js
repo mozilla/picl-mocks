@@ -72,13 +72,27 @@ setupFunctions["t2-signed-in-page"] = function() {
   progressMeter.max = 100;
   var val = 0;
 
+  function update(type, val) {
+    $('#progress-message').html('Syncing your ' + type + '...');
+  }
+
+  // should take about 15 seconds on average
   var intv = setInterval(function () {
-    progressMeter.value = val += 8 * Math.random();
+    progressMeter.value = val += 7 * Math.random();
+
     if (val >= 100) {
       $('#progress-message').html('Synced!');
       clearInterval(intv);
+    } else if (val >= 80) {
+      update('passwords', val);
+    } else if (val >= 70) {
+      update('tabs', val);
+    } else if (val >= 40) {
+      update('history', val);
+    } else {
+      update('bookmarks', val);
     }
-  }, 500);
+  }, 600);
 
 };
 
