@@ -5,8 +5,37 @@ var state = {};
 
 var setupFunctions = {};
 
+state.device = navigator.userAgent.match('Mobile') ? 'mobile' :
+               navigator.userAgent.match('Tablet') ? 'tablet' :
+               'desktop';
+
+state.os = navigator.userAgent.match('Mac') ? 'mac' :
+           navigator.userAgent.match('Windows') ? 'win' :
+           navigator.userAgent.match('Android') ? 'android' :
+          'linux';
+
+// each device has a unique id
+state.deviceId = localStorage.getItem('deviceId');
+if (! state.deviceId) {
+  state.deviceId = guid();
+  localStorage.setItem("deviceId", guid());
+}
+
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+               .toString(16)
+               .substring(1);
+  }
+
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+         s4() + '-' + s4() + s4() + s4();
+}
+
 function send(verb, body) {
   if (!body) body = {};
+  body.deviceId = state.deviceId;
 
   console.log('sending', verb, body);
 
@@ -46,6 +75,7 @@ function refreshAccounts() {
   console.log('refreshing accounts');
 
   send("accounts").then(function(accounts) {
+    state.accounts = accounts;
     console.log("accounts", accounts);
     $("#all-accounts").empty();
     var verifyLink;

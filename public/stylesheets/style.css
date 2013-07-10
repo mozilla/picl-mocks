@@ -197,3 +197,7 @@ input {
 .right {
   float: right;
 }
+
+fieldset {
+  border-radius: 8px;
+}

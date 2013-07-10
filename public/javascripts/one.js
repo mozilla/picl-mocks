@@ -27,7 +27,9 @@ setupFunctions["t1-create-signin"] = function() {
       email: state.email,
       password: state.password,
       password_confirm: password_confirm,
-      landing: state.flow.verifyLanding
+      landing: state.flow.verifyLanding,
+      device: state.device,
+      os: state.os
     };
 
     if (flow.verify === 'link') {
@@ -195,6 +197,17 @@ setupFunctions["confirm-email-code"] = function() {
 setupFunctions["preferences"] = function() {
   console.log('state', state.email);
 
+  var account = state.accounts[state.email];
+
+  console.log('devices', account.devices);
+
+  Object.keys(account.devices).forEach(function(deviceId) {
+    var device = account.devices[deviceId];
+    $('ul.devices').append(
+      $('<li>').text(device.name)
+    );
+  });
+
   $("a.logout").on("click", function() {
     var alert = document.createElement('x-alert');
     alert.innerHTML = '<h3>Sync Account</h3><p>Sign out will disconnect the browser with the current account. You can then sign in as another user.';
@@ -203,7 +216,6 @@ setupFunctions["preferences"] = function() {
     alert.setAttribute('primary-text', 'Continue');
     //alert.setAttribute('active', null);
     document.body.appendChild(alert);
-    console.log(alert);
 
     alert.addEventListener('hide', function(e) {
       if (e.buttonType === 'primary') {

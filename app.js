@@ -35,7 +35,15 @@ if ('development' == app.get('env')) {
 
 var accounts = {
   known: {
-    password: "password"
+    password: "password",
+    devices: {
+      foo: {
+        lastSync: Date.now(),
+        name: deviceName('mac', 'desktop'),
+        os: 'mac',
+        form: 'desktop'
+      }
+    }
   }
 };
 
@@ -45,7 +53,16 @@ function isVerified(user) {
 
 function flowParams(params, session) {
   return {
+    // verify flow
+    // - 'link' for verify link sent to email
+    // - 'pin' for PIN sent to email
     verify: params.verify || session.verify || 'link',
+
+    // This effects the landing page during link verify flow if
+    // the user opens it in a different browser/client.
+    // - 'verified' verifies the email but tells the user to login using firefox
+    // - 'oops' gives an error and tells the user to open the link
+    //   in firefox
     verifyLanding: params.verifyLanding || session.verifyLanding || 'verified'
   };
 }
@@ -74,17 +91,44 @@ app.all('/api/accounts',
     res.json(accounts);
   });
 
+function addUser(params) {
+  accounts[params.email] = {
+    password: params.password,
+    devices: {
+    }
+  };
+
+  accounts[params.email].devices[params.deviceId] = {
+    lastSync: 0,
+    name: deviceName(params.os, params.form),
+    os: params.os,
+    form: params.form
+  };
+}
+
+function deviceName(os, form) {
+  if (os === 'mac') {
+    return 'MacBook';
+  } else if (os === 'win') {
+    return 'Windows' + (form === 'mobile' ? ' phone' : form);
+  } else if (os === 'android') {
+    return 'Android ' + (form === 'mobile' ? ' phone' : form);
+  } else {
+    return os.toUpperCase() + ' ' + form;
+  }
+}
+
 app.post('/api/create',
   function(req, res) {
     var user = req.body.email;
-    var pass = req.body.password;
 
     console.log('req body', req.body);
 
     if (accounts[user]) {
       res.json(400, { success: false, error: 'AccountExists' });
     } else {
-      accounts[user] = { password: pass };
+      addUser(req.body);
+
       req.session.token = accounts[user].token = crypto.randomBytes(32).toString('hex');
       req.session.user = user;
       email.sendNewUserEmail(user, accounts[user].token, req.body.landing);
@@ -101,9 +145,10 @@ app.post('/api/create_code',
     var pass = req.body.password;
 
     if (accounts[user]) {
-      res.json({ success: false, error: 'AccountExists' });
+      res.json(400, { success: false, error: 'AccountExists' });
     } else {
-      accounts[user] = { password: pass };
+      addUser(req.body);
+
       req.session.confirm_code = accounts[user].confirm_code = Math.floor(Math.random() * 90000000) + 10000000;
       req.session.user = user;
       email.sendNewUserEmailCode(user, accounts[user].confirm_code);
@@ -118,9 +163,9 @@ app.post('/api/reverify',
   function(req, res) {
     var user = req.body.email;
     if (!accounts[user]) {
-      res.json({ success: false, message: "No such user" });
+      res.json(404, { success: false, message: "No such user" });
     } else if (!accounts[user].token) {
-      res.json({ success: false, message: "No token found for this user" });
+      res.json(404, { success: false, message: "No token found for this user" });
     }
 
     req.session.token = accounts[user].token;
@@ -177,7 +222,7 @@ app.all('/confirm_email',
       && token == accounts[email].token) {
       // user is not using the original Firefox browser
       delete req.session.token;
-      delete accounts[email].token;
+      if (landing !== 'oops') delete accounts[email].token;
       res.redirect('/flow/' + landing);
     } else if (token === accounts[email].token) {
       // account exists and user is using the same browser
@@ -208,7 +253,7 @@ app.post('/api/reset_code',
     var user = req.body.email;
 
     if (!accounts[user]) {
-      return res.json({ success: false, message: "No such user: " + user });
+      return res.json(404, { success: false, message: "No such user: " + user });
     }
 
     accounts[user].reset_code = Math.floor(Math.random() * 90000000) + 10000000;
