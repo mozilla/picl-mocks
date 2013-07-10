@@ -139,26 +139,6 @@ app.post('/api/create',
     }
   });
 
-app.post('/api/create_code',
-  function(req, res) {
-    var user = req.body.email;
-    var pass = req.body.password;
-
-    if (accounts[user]) {
-      res.json(400, { success: false, error: 'AccountExists' });
-    } else {
-      addUser(req.body);
-
-      req.session.confirm_code = accounts[user].confirm_code = Math.floor(Math.random() * 90000000) + 10000000;
-      req.session.user = user;
-      email.sendNewUserEmailCode(user, accounts[user].confirm_code);
-
-      console.log(accounts);
-
-      res.json({ success: true });
-    }
-  });
-
 app.post('/api/reverify',
   function(req, res) {
     var user = req.body.email;
@@ -218,33 +198,17 @@ app.all('/confirm_email',
 
     if (!accounts[email]) {
       res.redirect('/flow');
-    } else if (token !== req.session.token
-      && token == accounts[email].token) {
-      // user is not using the original Firefox browser
-      delete req.session.token;
-      if (landing !== 'oops') delete accounts[email].token;
-      res.redirect('/flow/' + landing);
     } else if (token === accounts[email].token) {
-      // account exists and user is using the same browser
       delete accounts[req.session.user].token;
-      res.redirect('/flow');
+
+      if (!req.session.token) {
+        // if not using the same firefox browser
+        res.redirect('/flow/verified');
+      } else {
+        res.redirect('/flow');
+      }
     } else {
       res.json(400, { success: false, error: "BadToken" });
-    }
-  });
-
-app.all('/api/confirm_email_code',
-  function(req, res) {
-    var email = req.body.email;
-    var code = parseInt(req.body.code, 10);
-
-    if (!accounts[email]) {
-      res.json(404, { success: false, error: "UnknownAccount" });
-    } else if (code === accounts[email].confirm_code) {
-      delete accounts[email].confirm_code;
-      res.json({ success: true });
-    } else {
-      res.json(400, { success: false, error: "BadCode" });
     }
   });
 

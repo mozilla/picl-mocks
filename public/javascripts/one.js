@@ -42,17 +42,7 @@ setupFunctions["t1-create-signin"] = function() {
             // show errors
           }
         });
-      } else if(flow.verify === 'pin') {
-        send('create_code', creds)
-          .then(function(r) {
-            console.log('response', r);
-            if (r.success) {
-              switchTo("confirm-email-code");
-            } else {
-              // show errors
-            }
-          });
-      }
+    }
 
     e.preventDefault();
     return false;
@@ -172,28 +162,6 @@ setupFunctions["new-password"] = function() {
   });
 };
 
-setupFunctions["confirm-email-code"] = function() {
-  $('#dialog .email').html(state.email);
-
-  $('#dialog form.email_code').on('submit', function(e) {
-    var code = this.code.value;
-
-    // send code email
-    send('confirm_email_code', {
-      email: state.email,
-      code: code
-    })
-    .then(function (r) {
-      console.log('code confirm back!', r);
-      if (r.success) {
-        switchTo('t2-signed-in-page');
-      }
-    });
-
-    e.preventDefault();
-    return false;
-  });
-};
 setupFunctions["preferences"] = function() {
   console.log('state', state.email);
 

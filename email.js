@@ -38,12 +38,6 @@ const templates = {
     subject: 'Reset password for Firefox Sync',
     text: fs.readFileSync(path.join(TEMPLATE_PATH, 'reset.ejs')),
     html: fs.readFileSync(path.join(TEMPLATE_PATH, 'reset.html.ejs'))
-  },
-  "newCode": {
-    landing: 'flow/confirm_email_code',
-    subject: 'Confirm email address for Firefox Sync',
-    text: fs.readFileSync(path.join(TEMPLATE_PATH, 'new2.ejs')),
-    html: fs.readFileSync(path.join(TEMPLATE_PATH, 'new2.html.ejs'))
   }
 };
 
@@ -98,6 +92,3 @@ exports.sendResetEmail = function(email, code) {
   send('reset', email, code);
 };
 
-exports.sendNewUserEmailCode = function(email, secret) {
-  send('newCode', email, secret);
-};
