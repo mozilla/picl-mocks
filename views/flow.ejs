@@ -139,14 +139,41 @@
   </div>
 
   <div class="preferences">
-      <center><h2>Preferences</h2></center>
-      <a href="#" class="logout">Sign out</a>
-      <button id='toggleSync' onclick="this.value='Enable Sync'">Suspend Sync</button>
-      <h3>Devices</h3>
-      <fieldset>
-      <ul class="devices">
-      </ul>
-      </fieldset>
+      <h2>Preferences</h2>
+
+      <div class="sync-prefs">
+        <h3>Account and Sync</h3>
+        <p>Signed in as: <span class="email"></span>
+        <a href="#" class="change-password">Change password</a>
+        </p>
+
+        <button class="logout">Sign Out</button>
+
+        <h3>Data in account</h3>
+        <input type="checkbox" name="bookmarks" checked=true /> Bookmarks <br />
+        <input type="checkbox" checked=true /> History <br />
+        <input type="checkbox" checked=true /> Open Tabs <br />
+        <input type="checkbox" checked=true /> Password <br />
+
+        <h3>Devices</h3>
+        <fieldset>
+          <ul class="devices">
+          </ul>
+        </fieldset>
+      </div>
+  </div>
+
+  <div class="preferences-signed-out">
+      <h2>Preferences</h2>
+
+      <div class="sync-prefs">
+        <h3>Account and Sync</h3>
+        <p class="success">Successfully signed out</p>
+        <p>Firefox is so cool (change me).</p>
+
+        <button class='signin'>Sign In</button>
+        <button class='create'>Create Account</button>
+      </div>
   </div>
 
   <div class="notes-preferences">

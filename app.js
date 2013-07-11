@@ -41,7 +41,8 @@ var accounts = {
         lastSync: Date.now(),
         name: deviceName('mac', 'desktop'),
         os: 'mac',
-        form: 'desktop'
+        form: 'desktop',
+        syncing: true
       }
     }
   }
@@ -94,15 +95,15 @@ app.all('/api/accounts',
 function addUser(params) {
   accounts[params.email] = {
     password: params.password,
-    devices: {
-    }
+    devices: {}
   };
 
   accounts[params.email].devices[params.deviceId] = {
     lastSync: 0,
-    name: deviceName(params.os, params.form),
+    name: deviceName(params.os, params.device),
     os: params.os,
-    form: params.form
+    form: params.device,
+    syncing: true
   };
 }
 
@@ -159,8 +160,11 @@ app.post('/api/login',
   function(req, res) {
     var user = req.body.email;
     var pass = req.body.password;
+    var device = user === 'known' ? 'foo' : req.body.deviceId;
 
     if (accounts[user] && accounts[user].password === pass) {
+      accounts[user].devices[device].syncing = true;
+      accounts[user].devices[device].lastSync = Date.now();
       req.session.user = user;
       res.json({ success: true });
     } else {
@@ -170,6 +174,8 @@ app.post('/api/login',
 
 app.post('/api/logout',
   function(req, res) {
+    var device = req.session.user === 'known' ? 'foo' : req.body.deviceId;
+    accounts[req.session.user].devices[device].syncing = false;
     req.session.destroy(function() {
       res.json({ success: true });
     });
@@ -230,11 +236,13 @@ app.all('/api/confirm_reset_code',
   function(req, res) {
     var email = req.body.email;
     var code = parseInt(req.body.code, 10);
+    var device = email === 'known' ? 'foo' : req.body.deviceId;
 
     if (!accounts[email]) {
       res.json(404, { success: false, error: "UnknownAccount" });
     } else if (code === accounts[email].reset_code) {
       delete accounts[email].reset_code;
+      accounts[email].devices[device].syncing = true;
       res.json({ success: true });
     } else {
       res.json(400, { success: false, error: "BadCode" });

@@ -31,7 +31,7 @@ xtag.register('x-tabbox', {
 	},
 	methods: {
 		setSelectedIndex: function(value){
-			selectTab(value);
+			selectTab.call(this, value);
 		},
 		getSelectedIndex: function(){
 			var tabs = xtag.query(this.firstElementChild, 'x-tab');

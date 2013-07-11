@@ -162,26 +162,50 @@ setupFunctions["new-password"] = function() {
   });
 };
 
-setupFunctions["preferences"] = function() {
-  console.log('state', state.email);
+setupFunctions["reset-success"] = function() {
+  var account = state.accounts[state.email];
 
+  $('ul.devices').html();
+  Object.keys(account.devices).forEach(function(deviceId) {
+    var device = account.devices[deviceId];
+    $('ul.devices').append(
+      $('<li>')
+        .html(device.name.bold())
+        .addClass(device.form)
+        .addClass(device.syncing ? 'syncing' : 'notsyncing')
+    );
+  });
+
+};
+
+setupFunctions["preferences"] = function() {
+  $('#dialog .email').html(state.email);
   var account = state.accounts[state.email];
 
   console.log('devices', account.devices);
 
+  $('ul.devices').html();
   Object.keys(account.devices).forEach(function(deviceId) {
     var device = account.devices[deviceId];
     $('ul.devices').append(
-      $('<li>').text(device.name)
+      $('<li>')
+        .html(device.name.bold())
+        .addClass(device.form)
+        .addClass(device.syncing ? 'syncing' : 'notsyncing')
     );
   });
 
-  $("a.logout").on("click", function() {
+  $("button.logout").on("click", function() {
     var alert = document.createElement('x-alert');
-    alert.innerHTML = '<h3>Sync Account</h3><p>Sign out will disconnect the browser with the current account. You can then sign in as another user.';
+    alert.innerHTML =
+      '<h3>Firefox Account</h3><p>Sign out will disconnect the browser your account.' +
+      '<p><small>You can also:<br/>' +
+      '<a href="#" class="clear-data">Clear local data</a> or ' +
+      '<a href="#" class="delete-account">Delete account</a>';
+
     alert.setAttribute('fade-duration', 500);
     alert.setAttribute('secondary-text', 'Cancel');
-    alert.setAttribute('primary-text', 'Continue');
+    alert.setAttribute('primary-text', 'Sign Out');
     //alert.setAttribute('active', null);
     document.body.appendChild(alert);
 
@@ -189,7 +213,8 @@ setupFunctions["preferences"] = function() {
       if (e.buttonType === 'primary') {
         send('logout').then(function(r) {
           if (r.success) {
-            window.location = '/';
+            state.email = null;
+            switchTo('preferences-signed-out');
           }
         });
       }
@@ -198,13 +223,31 @@ setupFunctions["preferences"] = function() {
 
 };
 
+setupFunctions["preferences-signed-out"] = function() {
+  console.log('state', state.email);
+
+  $("button.signin").on("click", function() {
+    switchTo('t1-create-signin');
+    console.log($("x-tabbox"));
+    $("x-tabbox")[0].setSelectedIndex(1);
+  });
+
+  $("button.create").on("click", function() {
+    switchTo('t1-create-signin');
+    $("x-tabbox")[0].setSelectedIndex(0);
+  });
+};
+
 $(function() {
   console.log("starting");
   state.email = user;
   state.flow = flow;
 
   if (page) {
-    switchTo(page);
+    send("accounts").then(function(accounts) {
+      state.accounts = accounts;
+      switchTo(page);
+    });
   } else if (user && verified) {
     switchTo("t2-signed-in-page");
   } else {

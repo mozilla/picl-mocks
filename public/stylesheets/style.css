@@ -38,6 +38,7 @@ div#notes-container {
   right: 5px;
   bottom: 5px;
   padding: 5px;
+  overflow: auto;
 }
 
 span.show-code {
@@ -51,7 +52,7 @@ label {
   display: block;
 }
 
-input {
+input, button {
   font-size: 18px;
 }
 
@@ -196,6 +197,58 @@ input {
 
 .right {
   float: right;
+}
+
+.reset-success .devices li {
+  margin-top: 50px;
+}
+
+.devices {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.devices li {
+  padding-left: 110px;
+  min-height: 60px;
+  padding-top: 5px;
+}
+
+.devices li.syncing:after {
+  display: block;
+  content: 'Syncing';
+  margin-top: 8px;
+  padding-left: 25px;
+  background: url(/images/syncing.png) no-repeat 0 50%;
+}
+.devices li.notsyncing:after {
+  display: block;
+  content: 'Not Syncing';
+  margin-top: 8px;
+  padding-left: 25px;
+  background: url(/images/notsyncing.png) no-repeat 0 50%;
+}
+
+.devices .desktop {
+  background: url(/images/desktop.png) no-repeat;
+}
+
+.devices .mobile, .devices .tablet {
+  background: url(/images/mobile.png) no-repeat;
+}
+
+.success {
+  color: black;
+  background: #cef;
+  display: block;
+  padding: 30px;
+  margin: 30px 0;
+  text-shadow: none;
+  text-align: center;
+}
+
+input::-moz-placeholder {
+  color: #ccc;
 }
 
 fieldset {

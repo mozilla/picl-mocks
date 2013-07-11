@@ -2,8 +2,8 @@ x-alert {
 	position: fixed;
 	padding: 15px 25px;
 	text-align: center;
-	background: #222;
-	color: #eee;
+	background: #fff;
+	color: #222;
 	z-index: 1100;
 
 	/* so that the alert popup doesn't flash for a split second on load */
