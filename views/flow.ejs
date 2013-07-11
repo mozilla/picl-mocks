@@ -28,6 +28,7 @@
       </x-tabs>
       <x-tabpanels>
         <x-tabpanel selected="true">
+          <p class="error"></p>
           <form class="create">
             <label>Email: </label>
             <input type="text" name="email" class="email focus" />
@@ -45,6 +46,7 @@
         </x-tabpanel>
 
         <x-tabpanel>
+          <p class="error"></p>
           <form class="login">
             <label>Email: </label>
             <input type="text" name="email" class="email focus" />
@@ -94,9 +96,9 @@
 
   <div class="reset-password">
     <p>
-      Forgot your password? No worries!<br/>
-      Reset your password!
+      Reset your password if you forgot it, but there are some consequences.
     </p>
+    <p class="error"></p>
     <form class="reset">
       <label>Your Email:
         <input type="text" name="email" class="email focus" />
@@ -106,19 +108,20 @@
     </form>
   </div>
 
-  <div class="confirm-reset-code">
+  <div class="confirm-reset-code error incorrect">
     <p>
-      Reset password email sent to: <span class="email"></span>
+      <strong>We will send you an email at</strong> <span class="email"></span>
     </p>
+    <p class="error"></p>
     <form class="reset_code">
-      <label>Enter the code in the email:</label>
-        <input type="text" name="code" class="code focus" />
+      <label>Copy the code in your email below:</label>
+        <input type="text" name="code" class="code focus" placeholder="000000" />
       <p>
-      <input type="submit" class="go right" value="Next" />
     </form>
   </div>
 
   <div class="new-password">
+    <p class="error"></p>
     <form class="new_password">
       <p>
         Create new password:
