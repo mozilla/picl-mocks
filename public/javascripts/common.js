@@ -33,6 +33,29 @@ function guid() {
          s4() + '-' + s4() + s4() + s4();
 }
 
+var errors = {
+  invalid_password: 'Password must be between 8 and 80 characters',
+  password_mismatch: 'These passwords don\'t match',
+  enter_password: 'Enter password here',
+  repeat_password: 'Repeat password here',
+  missing_email: 'Enter email here',
+  invalid_email: 'Please use a valid email address',
+  no_account: 'Try another email or <a href="#" class="create">Create an account</a>',
+  incorrect_code: 'Try another email or <a href="#" class="create">Create an account</a>',
+  expired_code: 'The code you entered has expired, <a href="#" class="resend">resend email</a>',
+  too_many: 'You\'ve entered the incorrect code too many times.',
+};
+
+function enterError(selector, message) {
+  console.log('error!!', selector, message, errors[message]);
+  $(selector).addClass('error');
+  $(selector + ' .error').html(errors[message]);
+}
+
+function leaveError() {
+  $('#dialog div.error, #dialog input.error').removeClass('error');
+}
+
 function send(verb, body) {
   if (!body) body = {};
   body.deviceId = state.deviceId;
@@ -48,7 +71,7 @@ function send(verb, body) {
     data: JSON.stringify(body),
     // what we expect:
     dataType: "json",
-    success: d.resolve
+    complete: function (j) { d.resolve(j.responseJSON); }
   });
   return d;
 }

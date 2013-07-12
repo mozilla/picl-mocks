@@ -20,9 +20,10 @@ setupFunctions["t1-create-signin"] = function() {
   });
 
   $('#dialog form.create').on("submit", function(e) {
-    state.email = $("#dialog form.create input.email").val();
-    state.password = $("#dialog form.create input[name='password']").val();
+    var email = state.email = $("#dialog form.create input.email").val();
+    var password = state.password = $("#dialog form.create input[name='password']").val();
     var password_confirm = $("#dialog form.create input[name='password']").val();
+
     var creds = {
       email: state.email,
       password: state.password,
@@ -90,26 +91,44 @@ setupFunctions["t2-signed-in-page"] = function() {
 
 setupFunctions["verify"] = function() {
   $('#dialog .verify-email').html(state.email);
+
 };
 
+
+function validateEmail(email) {
+  if (email.length < 3) return false;
+  if (email.indexOf('@') === -1) return false;
+  return true;
+}
 
 setupFunctions["reset-password"] = function() {
   $('#dialog form.reset').on('submit', function(e) {
     console.log('reset form!!!', e, this.email);
     var email = this.email.value;
 
+    e.preventDefault();
+
+    if (! email.length) {
+      //$('.reset-password .error').html(errors.missing_email);
+      return;
+    }
+    if (! validateEmail(email)) {
+      return enterError('.reset-password', 'invalid_email');
+    }
+
     // send code email
     send('reset_code', { email: email })
     .then(function (r) {
-      console.log('reset form return!!!', r);
+      //leaveError();
       if (r.success) {
         // switch to confirm code page
         state.email = email;
         switchTo('confirm-reset-code');
+      } else {
+        enterError('.reset-password', r.message);
       }
     });
 
-    e.preventDefault();
     return false;
   });
 };
@@ -131,6 +150,8 @@ setupFunctions["confirm-reset-code"] = function() {
       if (r.success) {
         // switch to confirm code page
         switchTo('new-password');
+      } else {
+        enterError('.confirm-reset-code', r.message);
       }
     });
 
@@ -139,10 +160,50 @@ setupFunctions["confirm-reset-code"] = function() {
   });
 };
 
+function validatePassword(pass) {
+  if (pass.length < 8 || pass.length > 80) return false;
+  return true;
+}
+
 setupFunctions["new-password"] = function() {
+  $('#dialog form .passowrd').on('blur', function(e) {
+    var password = this.value;
+    if (! validatePassword(password)) {
+      $(this).addClass('error').addClass('invalid');
+    }
+  });
+
+  $('#dialog form .confirm_passowrd').on('blur', function(e) {
+    var password = this.value;
+    if (! validatePassword(password)) {
+      $(this).addClass('oops').addClass('invalid');
+    }
+    if (password !== this.form.password.value) {
+      $(this).addClass('oops').addClass('mismatch');
+    }
+  });
+
   $('#dialog form.new_password').on('submit', function(e) {
     var password = this.password.value;
     var confirm_password = this.confirm_password.value;
+
+    if (! password.length) {
+      $(this.password)
+        .addClass('error')
+        .addClass('missing')
+        .attr('placeholder', 'Enter password here');
+
+      return;
+    }
+    if (! confirm_password.length) {
+      $(this.confirm_password)
+        .addClass('error')
+        .addClass('missing')
+        .attr('placeholder', 'Repeat password here');
+      return;
+    }
+
+    if (password !== confirm_password) return false;
 
     // send code email
     send('new_password', {
@@ -165,16 +226,20 @@ setupFunctions["new-password"] = function() {
 setupFunctions["reset-success"] = function() {
   var account = state.accounts[state.email];
 
+  var devices = Object.keys(account.devices);
   $('ul.devices').html();
-  Object.keys(account.devices).forEach(function(deviceId) {
-    var device = account.devices[deviceId];
-    $('ul.devices').append(
-      $('<li>')
-        .html(device.name.bold())
-        .addClass(device.form)
-        .addClass(device.syncing ? 'syncing' : 'notsyncing')
-    );
-  });
+  if (devices.length) {
+    devices.forEach(function(deviceId) {
+      var device = account.devices[deviceId];
+      $('ul.devices').append(
+        $('<li>')
+          .html(device.name.bold())
+          .addClass(device.form)
+          .addClass(device.syncing ? 'syncing' : 'notsyncing')
+      );
+    });
+  } else {
+  }
 
 };
 
@@ -225,17 +290,6 @@ setupFunctions["preferences"] = function() {
 
 setupFunctions["preferences-signed-out"] = function() {
   console.log('state', state.email);
-
-  $("button.signin").on("click", function() {
-    switchTo('t1-create-signin');
-    console.log($("x-tabbox"));
-    $("x-tabbox")[0].setSelectedIndex(1);
-  });
-
-  $("button.create").on("click", function() {
-    switchTo('t1-create-signin');
-    $("x-tabbox")[0].setSelectedIndex(0);
-  });
 };
 
 $(function() {
@@ -262,5 +316,28 @@ $(function() {
     e.preventDefault();
     return false;
   });
+
+  $('#dialog').on('click', '.resend',
+    function() {
+      send('reverify', {
+        email: state.email
+      }).then(function(r) {
+        if (r.success) {
+        } else {
+        }
+      });
+    });
+
+  $("#dialog").on("click", '.signin', function() {
+    switchTo('t1-create-signin');
+    console.log($("x-tabbox"));
+    $("x-tabbox")[0].setSelectedIndex(1);
+  });
+
+  $("#dialog").on("click", 'a.create, button.create', function() {
+    switchTo('t1-create-signin');
+    $("x-tabbox")[0].setSelectedIndex(0);
+  });
+
 });
 

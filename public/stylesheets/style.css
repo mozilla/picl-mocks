@@ -8,7 +8,7 @@ body {
 }
 
 div#dialog {
-  width: 700px;
+  width: 600px;
   /*background-color: #ccf;*/
   padding-left: 5px;
   padding-right: 5px;
@@ -17,7 +17,7 @@ div#dialog {
 }
 
 #dialog x-tabpanels {
-  width: 700px;
+  width: 600px;
 }
 
 div#sidechannel-container {
@@ -205,12 +205,16 @@ input, button {
   margin: 10px 0 !important;
 }
 
-.reset, .new-password, .reset-success {
+.reset, .new_password, .reset-success {
+  width: 500px;
+}
+
+.reset .email, .new_password input[type="password"] {
   width: 400px;
 }
 
-.reset .email, .new-password input[type="password"] {
-  width: 300px;
+form {
+  margin-top: 30px;
 }
 
 .right {
@@ -276,20 +280,89 @@ fieldset {
   color: black;
   background: #fcc;
   display: block;
-  padding: 30px;
+  padding: 20px;
   margin: 30px 0;
   text-shadow: none;
   text-align: center;
 }
 
-.incorrect p.error:after {
-  content: 'The code you entered is incorrect';
+input.error {
+  background: #fcc;
 }
 
-.expired p.error:after {
-  content: 'The code you entered has expired, resend email.';
+
+.progress {
+  position: relative;
+  margin-bottom: 40px;
 }
 
-.toomany p.error:after {
-  content: "You've entered the incorrect code too many times. Are you a robot? Try after 12 hours.";
+.progress span {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  height: 40px;
+  background: #eee;
+  text-align: center;
+  font-weight: bold;
+  color: black;
+  /*padding-top: 10px;*/
+  line-height: 40px;
 }
+
+.progress span.active {
+  background: #aaa;
+  color: white;
+}
+.progress span.active:after {
+  border-left-color: #aaa;
+}
+.progress span.active:before {
+  border-color: #fff #aaa #aaa #fff;
+}
+
+span.one, span.two {
+  position: relative;
+  margin-right: 60px;
+}
+span.two:after,
+span.one:after {
+	left: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+span.one:after,
+span.two:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-left-color: #eee;
+	border-width: 20px;
+	top: 50%;
+	margin-top: -20px;
+}
+
+span.two:before,
+span.three:before {
+	right: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+span.three:before,
+span.two:before {
+	border-color: rgba(136, 183, 213, 0);
+        /*border-right-color: #fff;*/
+        /*background-color: #f00;*/
+        border-color: #fff #eee #eee #fff;
+	border-width: 20px;
+	top: 50%;
+	margin-top: -20px;
+}
+

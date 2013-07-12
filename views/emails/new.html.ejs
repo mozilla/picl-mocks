@@ -85,7 +85,9 @@
                   <tr>
                     <td align="left" valign="top" class="email-content" style="border-collapse: collapse;  padding: 30px;">
                         <p><%= 'Welcome!' %></p>
-                      <p>Open the following link in Firefox:</p>
+
+                      <p><small><%= 'If you didn\'t sign up for a Firefox account, <a href="' + report_link + '">Report it</a>.' %></small></p>
+                      <p>Click the following link to verify email</p>
                       <p><a href="<%= link %>" style="color: #3b9bda;"><%= link %></a></p>
 
                       <p><%= 'Note: If you are NOT trying to sign into Firefox Sync, please ignore this email.' %></p>

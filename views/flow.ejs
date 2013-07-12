@@ -30,13 +30,11 @@
         <x-tabpanel selected="true">
           <p class="error"></p>
           <form class="create">
-            <label>Email: </label>
             <input type="text" name="email" class="email focus" />
-            <label>Confirm email </label>
-            <input type="text" name="email_confirm" />
             <br/>
-            <label>Password: </label>
             <input type="password" name="password" />
+            <br/>
+            <input type="password" name="password_confirm" />
             <p>By proceeding you agree with <a href="#">Terms of Service</a>
               and <a href="#">Privacy Policy</a>
             </p>
@@ -48,14 +46,11 @@
         <x-tabpanel>
           <p class="error"></p>
           <form class="login">
-            <label>Email: </label>
             <input type="text" name="email" class="email focus" />
-
-            <label>Password: </label>
+            <br />
             <input type="password" name="password" />
-
             <p>
-              <a href="#" class="forgot" data-page="reset-password">Forgot password?</a>
+              <a href="#" class="forgot" data-page="reset-password">Forgot Password</a>
             </p>
 
             <br/>
@@ -85,18 +80,23 @@
   <div class="verify">
     <h2>Please verify your email at:</h2>
     <p>
-      <strong class='verify-email'></strong>.
+      <span class='verify-email'></span>.
     </p>
+    <p>Didn't get it? <a href="#" class="resend">Resend Email</a>
   </div>
 
   <div class="verified">
-    <h3>Email verified!</h3>
-    <h3>Now go to Firefox and sign in!</h3>
+    <center>
+      <h3>Email verified!</h3>
+      <h3>Now go to Firefox and sign in!</h3>
+      <img src="/images/firefox.png" alt="firefox" />
+    </center>
   </div>
 
   <div class="reset-password">
+    <div class="progress"><span class="one active">1</span><span class="two">&nbsp;</span><span class="three">&nbsp;</span></div>
     <p>
-      Reset your password if you forgot it, but there are some consequences.
+      Reset your password
     </p>
     <p class="error"></p>
     <form class="reset">
@@ -108,26 +108,31 @@
     </form>
   </div>
 
-  <div class="confirm-reset-code error incorrect">
+  <div class="confirm-reset-code">
+    <div class="progress"><span class="one">1</span><span class="two active">2</span><span class="three">&nbsp;</span></div>
     <p>
-      <strong>We will send you an email at</strong> <span class="email"></span>
+      <strong>We will send you an email to</strong> <span class="email"></span>
+    </p>
+    <p>
+      <small>Didn't get it? <a href="#" class="resend">Resend Email</a></small>
     </p>
     <p class="error"></p>
     <form class="reset_code">
-      <label>Copy the code in your email below:</label>
-        <input type="text" name="code" class="code focus" placeholder="000000" />
+      <label><b>Copy the code in your email below:</b></label>
+        <input type="text" name="code" class="code focus" placeholder="XXXXXX" />
       <p>
     </form>
   </div>
 
   <div class="new-password">
+    <div class="progress"><span class="one">1</span><span class="two">2</span><span class="three active">3</span></div>
     <p class="error"></p>
     <form class="new_password">
       <p>
-        Create new password:
+        Great, now create new password!
       </p>
-      <input type="password" name="password" placeholder="new password" class="focus" /> <br/>
-      <input type="password" name="confirm_password" placeholder="confirm password" />
+      <input type="password" name="password" placeholder="create password" class="focus" /> <br/>
+      <input type="password" name="confirm_password" placeholder="repeat password" />
       <p>
       <input type="submit" class="go right" value="Reset" />
     </form>

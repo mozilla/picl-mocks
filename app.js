@@ -223,7 +223,7 @@ app.post('/api/reset_code',
     var user = req.body.email;
 
     if (!accounts[user]) {
-      return res.json(404, { success: false, message: "No such user: " + user });
+      return res.json(404, { success: false, message: 'no_account' });
     }
 
     accounts[user].reset_code = Math.floor(Math.random() * 90000000) + 10000000;
@@ -238,14 +238,22 @@ app.all('/api/confirm_reset_code',
     var code = parseInt(req.body.code, 10);
     var device = email === 'known' ? 'foo' : req.body.deviceId;
 
+    // TODO expired codes
+
     if (!accounts[email]) {
-      res.json(404, { success: false, error: "UnknownAccount" });
+      res.json(404, { success: false, message: "no_account" });
+
     } else if (code === accounts[email].reset_code) {
       delete accounts[email].reset_code;
       accounts[email].devices[device].syncing = true;
       res.json({ success: true });
+
     } else {
-      res.json(400, { success: false, error: "BadCode" });
+      accounts[email].reset_count++;
+      if (accounts[email].reset_count > 5) {
+        return res.json(412, { success: false, message: 'too_many' });
+      }
+      res.json(400, { success: false, message: "incorrect_code" });
     }
   });
 
@@ -256,16 +264,16 @@ app.post('/api/new_password',
     var confirm_password = req.body.confirm_password;
 
     if (!accounts[email]) {
-      res.json(404, { success: false, error: "UnknownAccount" });
+      res.json(404, { success: false, message: "UnknownAccount" });
 
     } else if (password != confirm_password) {
-      res.json(400, { success: false, error: "PasswordMismatch" });
+      res.json(400, { success: false, message: "PasswordMismatch" });
 
     } else if (password) {
       accounts[email].password = password;
       res.json({ success: true });
     } else {
-      res.json(400, { success: false, error: "MissingPassword" });
+      res.json(400, { success: false, message: "MissingPassword" });
     }
   });
 
