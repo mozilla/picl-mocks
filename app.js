@@ -126,7 +126,7 @@ app.post('/api/create',
     console.log('req body', req.body);
 
     if (accounts[user]) {
-      res.json(400, { success: false, error: 'AccountExists' });
+      res.json(400, { success: false, message: 'exists' });
     } else {
       addUser(req.body);
 
@@ -144,9 +144,9 @@ app.post('/api/reverify',
   function(req, res) {
     var user = req.body.email;
     if (!accounts[user]) {
-      res.json(404, { success: false, message: "No such user" });
+      res.json(404, { success: false, message: "no_account" });
     } else if (!accounts[user].token) {
-      res.json(404, { success: false, message: "No token found for this user" });
+      res.json(400, { success: false, message: "incorrect_token" });
     }
 
     req.session.token = accounts[user].token;
@@ -264,16 +264,16 @@ app.post('/api/new_password',
     var confirm_password = req.body.confirm_password;
 
     if (!accounts[email]) {
-      res.json(404, { success: false, message: "UnknownAccount" });
+      res.json(404, { success: false, message: "no_account" });
 
     } else if (password != confirm_password) {
-      res.json(400, { success: false, message: "PasswordMismatch" });
+      res.json(400, { success: false, message: "mismatch" });
 
     } else if (password) {
       accounts[email].password = password;
       res.json({ success: true });
     } else {
-      res.json(400, { success: false, message: "MissingPassword" });
+      res.json(400, { success: false, message: "missing_password" });
     }
   });
 

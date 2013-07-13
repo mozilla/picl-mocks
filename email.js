@@ -53,11 +53,13 @@ function send(type, email, secret, params) {
   var template = templates[type];
 
   var public_url = config.get('public_url') + '/' + template.landing;
+  var report_link = config.get('public_url') + '/report';
 
   public_url += '?email=' + email + (params || '');
 
   var templateArgs = {
     link: public_url,
+    report_link: report_link,
     secret: secret
   };
 

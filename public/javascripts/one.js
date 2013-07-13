@@ -1,9 +1,42 @@
 
 setupFunctions["t1-create-signin"] = function() {
+  $('#dialog form input.email').on('blur', function(e) {
+    var email = this.value;
+    if (! validateEmail(email)) {
+      return $(this).addClass('oops').addClass('invalid');
+    }
+    $(this).removeClass('oops').removeClass('invalid').addClass('ok');
+  });
+
+  $('#dialog form.create input.password').on('blur', function(e) {
+    console.log(e);
+    var password = this.value;
+    if (! validatePassword(password)) {
+      return $(this).addClass('oops').addClass('invalid');
+    }
+    $(this).removeClass('oops').removeClass('invalid').addClass('ok');
+  });
+
+  $('#dialog form.create input.confirm_password').on('blur', function(e) {
+    var password = this.value;
+    if (! validatePassword(password)) {
+      return $(this).addClass('oops').addClass('invalid');
+    }
+    if (password !== this.form.password.value) {
+      return $(this).addClass('oops').addClass('mismatch');
+    }
+    $(this)
+      .removeClass('oops')
+      .removeClass('mismatch')
+      .removeClass('invalid')
+      .addClass('ok');
+  });
 
   $('#dialog form.login').on("submit", function(e) {
-    state.email = $("#dialog form.login input.email").val();
-    state.password = $("#dialog form.login input[name='password']").val();
+    leaveError();
+    e.preventDefault();
+    var email = state.email = $("#dialog form.login input.email").val();
+    var password = state.password = $("#dialog form.login input[name='password']").val();
 
     send('login', { email: state.email, password: state.password })
       .then(function(r) {
@@ -12,17 +45,40 @@ setupFunctions["t1-create-signin"] = function() {
           switchTo("t2-signed-in-page");
         } else {
           // show errors
+          enterError('.login-panel', r.message);
         }
       });
 
-    e.preventDefault();
     return false;
   });
 
   $('#dialog form.create').on("submit", function(e) {
     var email = state.email = $("#dialog form.create input.email").val();
     var password = state.password = $("#dialog form.create input[name='password']").val();
-    var password_confirm = $("#dialog form.create input[name='password']").val();
+    var password_confirm = $("#dialog form.create input[name='password_confirm']").val();
+
+    e.preventDefault();
+    leaveError();
+
+    console.log('passes', email, password, password_confirm);
+
+    if (! password.length) {
+      $(this.password)
+        .addClass('error')
+        .addClass('missing')
+        .attr('placeholder', 'Enter password here');
+
+      return;
+    }
+    if (! password_confirm.length) {
+      $(this.password_confirm)
+        .addClass('error')
+        .addClass('missing')
+        .attr('placeholder', 'Repeat password here');
+      return;
+    }
+
+    if (password !== password_confirm) return false;
 
     var creds = {
       email: state.email,
@@ -41,6 +97,7 @@ setupFunctions["t1-create-signin"] = function() {
             switchTo("verify");
           } else {
             // show errors
+            enterError('.create-panel', r.message);
           }
         });
     }
@@ -166,24 +223,34 @@ function validatePassword(pass) {
 }
 
 setupFunctions["new-password"] = function() {
-  $('#dialog form .passowrd').on('blur', function(e) {
+  $('#dialog form input.password').on('blur', function(e) {
+    console.log(e);
     var password = this.value;
     if (! validatePassword(password)) {
-      $(this).addClass('error').addClass('invalid');
+      return $(this).addClass('oops').addClass('invalid');
     }
+    $(this).removeClass('oops').removeClass('invalid').addClass('ok');
   });
 
-  $('#dialog form .confirm_passowrd').on('blur', function(e) {
+  $('#dialog form input.confirm_password').on('blur', function(e) {
     var password = this.value;
     if (! validatePassword(password)) {
-      $(this).addClass('oops').addClass('invalid');
+      return $(this).addClass('oops').addClass('invalid');
     }
     if (password !== this.form.password.value) {
-      $(this).addClass('oops').addClass('mismatch');
+      return $(this).addClass('oops').addClass('mismatch');
     }
+    $(this)
+      .removeClass('oops')
+      .removeClass('mismatch')
+      .removeClass('invalid')
+      .addClass('ok');
   });
 
   $('#dialog form.new_password').on('submit', function(e) {
+    e.preventDefault();
+    leaveError();
+
     var password = this.password.value;
     var confirm_password = this.confirm_password.value;
 

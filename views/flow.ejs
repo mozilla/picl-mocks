@@ -27,14 +27,14 @@
         <x-tab>Sign In</x-tab>
       </x-tabs>
       <x-tabpanels>
-        <x-tabpanel selected="true">
+        <x-tabpanel selected="true" class="create-panel">
           <p class="error"></p>
           <form class="create">
-            <input type="text" name="email" class="email focus" />
+            <input type="text" name="email" class="email focus" placeholder="Email" /><span></span>
             <br/>
-            <input type="password" name="password" />
+            <input type="password" name="password" class="password"  placeholder="Password"/><span></span>
             <br/>
-            <input type="password" name="password_confirm" />
+            <input type="password" name="password_confirm" class="confirm_password" placeholder="Confirm Password" /><span></span>
             <p>By proceeding you agree with <a href="#">Terms of Service</a>
               and <a href="#">Privacy Policy</a>
             </p>
@@ -43,12 +43,12 @@
           </form>
         </x-tabpanel>
 
-        <x-tabpanel>
+        <x-tabpanel class="login-panel">
           <p class="error"></p>
           <form class="login">
-            <input type="text" name="email" class="email focus" />
+            <input type="text" name="email" class="email focus" /><span></span>
             <br />
-            <input type="password" name="password" />
+            <input type="password" name="password" class="password" /><span></span>
             <p>
               <a href="#" class="forgot" data-page="reset-password">Forgot Password</a>
             </p>
@@ -78,19 +78,19 @@
   </div>
 
   <div class="verify">
-    <h2>Please verify your email at:</h2>
+    <h2>Confirm your email address</h2>
+    <h3>Check your email at</h3>
     <p>
       <span class='verify-email'></span>.
     </p>
-    <p>Didn't get it? <a href="#" class="resend">Resend Email</a>
+    <small>Didn't get it? <a href="#" class="resend">Resend Email</a>
+    </small>
   </div>
 
   <div class="verified">
-    <center>
       <h3>Email verified!</h3>
       <h3>Now go to Firefox and sign in!</h3>
       <img src="/images/firefox.png" alt="firefox" />
-    </center>
   </div>
 
   <div class="reset-password">
@@ -131,8 +131,8 @@
       <p>
         Great, now create new password!
       </p>
-      <input type="password" name="password" placeholder="create password" class="focus" /> <br/>
-      <input type="password" name="confirm_password" placeholder="repeat password" />
+      <input type="password" name="password" placeholder="create password" class="focus password" /><span></span> <br/>
+      <input type="password" name="confirm_password" placeholder="repeat password" class="confirm_password" /><span></span>
       <p>
       <input type="submit" class="go right" value="Reset" />
     </form>

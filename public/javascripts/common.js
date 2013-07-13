@@ -44,6 +44,7 @@ var errors = {
   incorrect_code: 'Try another email or <a href="#" class="create">Create an account</a>',
   expired_code: 'The code you entered has expired, <a href="#" class="resend">resend email</a>',
   too_many: 'You\'ve entered the incorrect code too many times.',
+  exists: 'There is an existing account for this email.<br/>Re-enter email or Sign In.'
 };
 
 function enterError(selector, message) {
