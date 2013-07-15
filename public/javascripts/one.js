@@ -8,7 +8,7 @@ setupFunctions["t1-create-signin"] = function() {
     $(this).removeClass('oops').removeClass('invalid').addClass('ok');
   });
 
-  $('#dialog form.create input.password').on('blur', function(e) {
+  $('#dialog form input.password').on('blur', function(e) {
     console.log(e);
     var password = this.value;
     if (! validatePassword(password)) {
@@ -37,6 +37,23 @@ setupFunctions["t1-create-signin"] = function() {
     e.preventDefault();
     var email = state.email = $("#dialog form.login input.email").val();
     var password = state.password = $("#dialog form.login input[name='password']").val();
+    if (! email.length) {
+      $(this.email)
+        .addClass('error')
+        .addClass('missing')
+        .attr('placeholder', 'Enter email here');
+
+      return;
+    }
+
+    if (! password.length) {
+      $(this.password)
+        .addClass('error')
+        .addClass('missing')
+        .attr('placeholder', 'Enter password here');
+
+      return;
+    }
 
     send('login', { email: state.email, password: state.password })
       .then(function(r) {
@@ -61,6 +78,15 @@ setupFunctions["t1-create-signin"] = function() {
     leaveError();
 
     console.log('passes', email, password, password_confirm);
+
+    if (! email.length) {
+      $(this.email)
+        .addClass('error')
+        .addClass('missing')
+        .attr('placeholder', 'Enter email here');
+
+      return;
+    }
 
     if (! password.length) {
       $(this.password)
@@ -199,7 +225,11 @@ setupFunctions["reset-password"] = function() {
     e.preventDefault();
 
     if (! email.length) {
-      //$('.reset-password .error').html(errors.missing_email);
+      $(this.email)
+        .addClass('error')
+        .addClass('missing')
+        .attr('placeholder', 'Enter email here');
+
       return;
     }
     if (! validateEmail(email)) {
@@ -323,6 +353,7 @@ setupFunctions["new-password"] = function() {
   });
 };
 
+
 setupFunctions["reset-success"] = function() {
   var account = state.accounts[state.email];
 
@@ -408,7 +439,7 @@ $(function() {
     switchTo("t1-create-signin");
   }
 
-  $("#notes-container").toggle();
+  //$("#notes-container").toggle();
 
   $("#dialog").on('click', 'a[data-page]', function(e) {
     var page = $(this).data('page');

@@ -28,6 +28,7 @@ div#sidechannel-container {
   left: 5px;
   bottom: 5px;
   padding: 5px;
+  display: none;
 }
 
 div#notes-container {
@@ -39,6 +40,7 @@ div#notes-container {
   bottom: 5px;
   padding: 5px;
   overflow: auto;
+  display: none;
 }
 
 span.show-code {
@@ -279,7 +281,7 @@ form {
   text-align: center;
 }
 
-input::-moz-placeholder {
+.confirm-reset-code input::-moz-placeholder {
   color: #ccc;
 }
 

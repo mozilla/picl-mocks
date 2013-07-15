@@ -173,8 +173,12 @@ app.post('/api/login',
       accounts[user].devices[device].lastSync = Date.now();
       req.session.user = user;
       res.json({ success: true });
+    } else if (accounts[user] && accounts[user].token) {
+      res.json(401, { success: false, message: "unverified" });
+    } else if (accounts[user]) {
+      res.json(401, { success: false, message: "incorrect_password" });
     } else {
-      res.json(401, { success: false, error: "Unauthorized" });
+      res.json(401, { success: false, message: "no_account" });
     }
   });
 
