@@ -225,6 +225,7 @@ form {
   margin-top: 50px;
 }
 
+
 .devices {
   list-style: none;
   padding-left: 0px;
@@ -258,6 +259,15 @@ form {
 .devices .mobile, .devices .tablet {
   background: url(/images/mobile.png) no-repeat;
 }
+
+.t2-signed-in-page .devices .desktop {
+  background: url(/images/desktop.png) no-repeat 50% 0;
+}
+
+.t2-signed-in-page .devices .mobile, .t2-signed-in-page .devices .tablet {
+  background: url(/images/mobile.png) no-repeat 50% 0;
+}
+
 
 .success {
   color: black;
@@ -321,6 +331,7 @@ input.oops + span:after {
   right: -230px;
   padding: 5px 10px;
   font-size: 75%;
+  top: -23px;
   /*right: -200px;*/
   /*right: 100%;*/
 }

@@ -86,7 +86,7 @@ function send(type, email, secret, params) {
 }
 
 exports.sendNewUserEmail = function(email, secret, landFlow) {
-  var params = '&token=' + secret + '&verifyLanding=' + landFlow;
+  var params = '&token=' + secret;
   send('new', email, secret, params);
 };
 

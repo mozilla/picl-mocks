@@ -8,8 +8,6 @@
 
 <div id="notes-container">
   <center>Implementor Notes</center>
-  <p>verify flow: <a href="/flow">link</a> <a href="/flow?verify=pin">pin</a>
-  <p>"oops" page: <a href="/flow">off</a> <a href="/flow?verifyLanding=oops">on</a>
   <div class="close"><a href="javascript: toggleAdmin();">x</a></div>
   <div id="notes"></div>
   <p>Current Accounts:</p>
@@ -68,6 +66,9 @@
   <div class="t2-signed-in-page">
       <center><h2>Welcome!<br/> You are successfully signed in as:</h2>
         <p class="user">test</p>
+
+        <ul class='devices'></ul>
+
         <p id="progress-message">Syncing your data...</p>
         <progress id="progress-meter"></progress>
         <p>You may close this tab and keep browsing or go to <a href="#" class="prefs">Preferences</a> to manage your account.</p>
@@ -85,6 +86,11 @@
     </p>
     <small>Didn't get it? <a href="#" class="resend">Resend Email</a>
     </small>
+  </div>
+
+  <div class="badlink">
+    <h2>Could not confirm your email address</h2>
+    <p class="error">The link you followed has expired.</p>
   </div>
 
   <div class="verified">
@@ -152,7 +158,6 @@
       <div class="sync-prefs">
         <h3>Account and Sync</h3>
         <p>Signed in as: <span class="email"></span>
-        <a href="#" class="change-password">Change password</a>
         </p>
 
         <button class="logout">Sign Out</button>

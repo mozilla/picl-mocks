@@ -116,7 +116,28 @@ setupFunctions["t2-signed-in-page"] = function() {
     switchTo("preferences");
   });
 
-  /** Setup the <progress> JavaScript example **/
+  // show devices
+
+  send('accounts')
+  .then(function (r) {
+    var account = state.accounts[state.email];
+
+    console.log('devices', account.devices);
+
+    $('ul.devices').html();
+    Object.keys(account.devices).forEach(function(deviceId) {
+      var device = account.devices[deviceId];
+      $('ul.devices').append(
+        $('<li>')
+          .addClass(device.form)
+          //.html(device.name.bold())
+          //.addClass(device.syncing ? 'syncing' : 'notsyncing')
+      );
+    });
+
+  });
+
+  // show progress meter
   var progressMeter = $('#progress-meter')[0];
   progressMeter.min = 0;
   progressMeter.max = 100;
@@ -149,6 +170,18 @@ setupFunctions["t2-signed-in-page"] = function() {
 setupFunctions["verify"] = function() {
   $('#dialog .verify-email').html(state.email);
 
+  console.log('state', state);
+
+  var intv = setInterval(function () {
+    send('verified', { email: state.email })
+    .then(function (r) {
+      console.log('verify!!!', r);
+      if (r.success) {
+        switchTo('t2-signed-in-page');
+        clearInterval(intv);
+      }
+    });
+  }, 1000);
 };
 
 
@@ -370,7 +403,7 @@ $(function() {
       switchTo(page);
     });
   } else if (user && verified) {
-    switchTo("t2-signed-in-page");
+    switchTo("preferences");
   } else {
     switchTo("t1-create-signin");
   }
