@@ -100,6 +100,8 @@ setupFunctions["t1-create-signin"] = function() {
     var password = state.password = $("#dialog form.create input[name='password']").val();
     var passwordConfirm = $("#dialog form.create input[name='password_confirm']").val();
     var error = false;
+    
+    if(isBusy()) return false;
 
     e.preventDefault();
     leaveError();

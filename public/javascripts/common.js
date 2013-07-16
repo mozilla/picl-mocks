@@ -177,8 +177,8 @@ function toggleAdmin() {
 
 function isBusy() {
   var wrap = $("#wrapper, #wrap");
-  if( wrap.hasClass("busy") ) return false;
-  else return true;
+  if( wrap.hasClass("busy") ) return true;
+  else return false;
 }
 
 function makeBusy() {
