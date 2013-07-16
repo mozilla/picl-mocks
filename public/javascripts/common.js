@@ -37,6 +37,7 @@ var errors = {
   invalid_password: 'Password must be at least 8 characters',
   password_mismatch: 'These passwords don\'t match',
   enter_password: 'Please enter a password',
+  enter_email: 'Please enter an email',
   repeat_password: 'Repeat password here',
   missing_email: 'Enter email here',
   invalid_email: 'Please use a valid email address',

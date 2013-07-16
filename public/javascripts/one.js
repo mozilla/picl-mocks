@@ -225,6 +225,12 @@ function validateEmail(email) {
 }
 
 setupFunctions["reset-password"] = function() {
+
+  $('.cancel').click(function(e) {
+    switchTo('t1-create-signin');
+    $("x-tabbox")[0].setSelectedIndex(1);
+  });
+
   $('#dialog form.reset').on('submit', function(e) {
     console.log('reset form!!!', e, this.email);
     var email = this.email.value;
@@ -232,7 +238,7 @@ setupFunctions["reset-password"] = function() {
     e.preventDefault();
 
     if (! email.length) {
-      return enterError('.reset-password', 'enter_password');
+      return enterError('.reset-password', 'enter_email');
     }
 
     if (! validateEmail(email)) {
