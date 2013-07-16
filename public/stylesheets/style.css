@@ -302,7 +302,7 @@ input {
   margin-bottom: 20px;
 }
 
-input.error {
+input.error, input.oops {
   background: #fcc;
 }
 
@@ -315,11 +315,23 @@ input.oops.invalid.email + span:after {
 }
 
 input.oops.invalid + span:after {
-  content: 'Password must be between 8 and 80 characters.';
+  content: 'Password must be at least 8 characters.';
 }
 
 input.oops.mismatch + span:after {
   content: 'These passwords don\'t match.';
+}
+
+input[type="text"].oops.missing + span:after {
+  content: 'Missing email';
+}
+
+input[type="password"].oops.missing + span:after {
+  content: 'Missing password';
+}
+
+input[type="password"].oops.missing_confirm + span:after {
+  content: 'Repeat password';
 }
 
 input.oops + span:after {

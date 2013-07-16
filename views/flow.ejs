@@ -30,7 +30,7 @@
           <form class="create">
             <input type="text" name="email" class="email focus" placeholder="Email" /><span></span>
             <br/>
-            <input type="password" name="password" class="password"  placeholder="Password"/><span></span>
+            <input type="password" name="password" class="password"  placeholder="Password (min 8 chars)"/><span></span>
             <br/>
             <input type="password" name="password_confirm" class="confirm_password" placeholder="Confirm Password" /><span></span>
             <p>By proceeding you agree with <a href="#">Terms of Service</a>
@@ -100,7 +100,7 @@
   </div>
 
   <div class="reset-password">
-    <div class="progress"><span class="one active">1</span><span class="two">&nbsp;</span><span class="three">&nbsp;</span></div>
+    <div class="progress"><span class="one active">1</span><span class="two">2</span><span class="three">3</span></div>
     <p>
       Reset your password
     </p>
@@ -110,12 +110,12 @@
         <input type="text" name="email" class="email focus" />
       </label>
       <p>
-      <input type="submit" class="go right" value="Reset Password" />
+      <input type="submit" class="go right" value="Next" />
     </form>
   </div>
 
   <div class="confirm-reset-code">
-    <div class="progress"><span class="one">1</span><span class="two active">2</span><span class="three">&nbsp;</span></div>
+    <div class="progress"><span class="one">1</span><span class="two active">2</span><span class="three">3</span></div>
     <p>
       <strong>We will send you an email to</strong> <span class="email"></span>
     </p>
@@ -127,6 +127,7 @@
       <label><b>Copy the code in your email below:</b></label>
         <input type="text" name="code" class="code focus" placeholder="XXXXXX" />
       <p>
+      <input type="submit" class="go" value="Next" />
     </form>
   </div>
 
@@ -137,10 +138,10 @@
       <p>
         Great, now create new password!
       </p>
-      <input type="password" name="password" placeholder="create password" class="focus password" /><span></span> <br/>
+      <input type="password" name="password" placeholder="create password (min 8 chars)" class="focus password" /><span></span> <br/>
       <input type="password" name="confirm_password" placeholder="repeat password" class="confirm_password" /><span></span>
       <p>
-      <input type="submit" class="go right" value="Reset" />
+      <span class="right"><a href="#">Cancel</a> <input type="submit" class="go right" value="Reset" /></span>
     </form>
   </div>
 
