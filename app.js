@@ -132,7 +132,7 @@ function deviceName(os, form) {
   if (os === 'mac') {
     return 'MacBook';
   } else if (os === 'win') {
-    return 'Windows' + (form === 'mobile' ? ' phone' : form);
+    return 'Windows ' + (form === 'mobile' ? ' phone' : form);
   } else if (os === 'android') {
     return 'Android ' + (form === 'mobile' ? ' phone' : form);
   } else {

@@ -158,7 +158,7 @@ setupFunctions["t2-signed-in-page"] = function() {
 
     console.log('devices', account.devices);
 
-    $('#dialog ul.devices').html();
+    $('#dialog ul.devices').html('');
     Object.keys(account.devices).forEach(function(deviceId) {
       var device = account.devices[deviceId];
       $('#dialog ul.devices').append(
@@ -375,7 +375,7 @@ setupFunctions["reset-success"] = function() {
   var account = state.accounts[state.email];
 
   var devices = Object.keys(account.devices);
-  $('#dialog ul.devices').html();
+  $('#dialog ul.devices').html('');
   if (devices.length) {
     devices.forEach(function(deviceId) {
       var device = account.devices[deviceId];
@@ -395,7 +395,7 @@ setupFunctions["reset-success"] = function() {
 function showDevices() {
   var account = state.accounts[state.email];
 
-  $('#dialog ul.devices').html();
+  $('#dialog ul.devices').html('');
   Object.keys(account.devices).forEach(function(deviceId) {
     console.log('device??', deviceId);
     var device = account.devices[deviceId];
@@ -485,10 +485,12 @@ $(function() {
 
   $('#dialog').on('click', '.resend',
     function() {
+      var el = $(this);
       send('reverify', {
         email: state.email
       }).then(function(r) {
         if (r.success) {
+          el.html('Email sent!');
         } else {
         }
       });
