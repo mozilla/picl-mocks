@@ -314,6 +314,10 @@ fieldset {
   text-align: center;
 }
 
+input[type="text"], input[type="password"] {
+  min-width: 300px;
+}
+
 input {
   margin-bottom: 20px;
 }
