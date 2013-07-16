@@ -389,11 +389,9 @@ setupFunctions["reset-success"] = function() {
 
 };
 
-setupFunctions["preferences"] = function() {
-  $('#dialog .email').html(state.email);
-  var account = state.accounts[state.email];
 
-  console.log('devices', account.devices);
+function showDevices() {
+  var account = state.accounts[state.email];
 
   $('#dialog ul.devices').html();
   Object.keys(account.devices).forEach(function(deviceId) {
@@ -408,6 +406,20 @@ setupFunctions["preferences"] = function() {
         .addClass(device.syncing ? 'syncing' : 'notsyncing')
     );
   });
+}
+
+setupFunctions["preferences"] = function() {
+  $('#dialog .email').html(state.email);
+
+  if (state.accounts) {
+    showDevices();
+  } else {
+    send('accounts', {})
+    .then(function(r) {
+      showDevices();
+    });
+  }
+
 
   $("button.logout").on("click", function() {
     var alert = document.createElement('x-alert');
@@ -446,8 +458,11 @@ $(function() {
   state.email = user;
   state.flow = flow;
 
+  console.log('state', state);
+
   if (page) {
     send("accounts").then(function(accounts) {
+      console.log('accounts???', accounts);
       state.accounts = accounts;
       switchTo(page);
     });
