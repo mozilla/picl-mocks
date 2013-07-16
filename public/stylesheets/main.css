@@ -192,6 +192,10 @@ input[type="submit"], button,  a.x-alert-secondary {
 	
 }
 
+input[type="submit"]:active, button:active,  a.x-alert-secondary:active {
+  background: #9d9d9d;
+} 
+
 input[type="checkbox"] {
 	margin:.5em 0;
 }
