@@ -62,7 +62,12 @@ setupFunctions["t1-create-signin"] = function() {
 
     if (error) return false;
 
-    send('login', { email: state.email, password: state.password })
+    send('login', {
+      email: state.email,
+      password: state.password,
+      device: state.device,
+      os: state.os
+    })
       .then(function(r) {
         console.log('response', r);
         if (r.success) {
@@ -116,23 +121,20 @@ setupFunctions["t1-create-signin"] = function() {
       email: state.email,
       password: state.password,
       password_confirm: password_confirm,
-      landing: state.flow.verifyLanding,
       device: state.device,
       os: state.os
     };
 
-    if (flow.verify === 'link') {
-      send('create', creds)
-        .then(function(r) {
-          console.log('response', r);
-          if (r.success) {
-            switchTo("verify");
-          } else {
-            // show errors
-            enterError('.create-panel', r.message);
-          }
-        });
-    }
+    send('create', creds)
+      .then(function(r) {
+        console.log('response', r);
+        if (r.success) {
+          switchTo("verify");
+        } else {
+          // show errors
+          enterError('.create-panel', r.message);
+        }
+      });
 
     e.preventDefault();
     return false;

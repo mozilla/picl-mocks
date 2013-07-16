@@ -1,39 +1,29 @@
 
 <div id="dialog"></div>
 
-<div id="sidechannel-container">
-  <center>Side Channel</center>
-  <div id="sidechannel"></div>
-</div>
 
-<div id="notes-container">
-  <center>Implementor Notes</center>
-  <div class="close"><a href="javascript: toggleAdmin();">x</a></div>
-  <div id="notes"></div>
-  <p>Current Accounts:</p>
-  <div id="all-accounts"></div>
-</div>
 
-<!-- templates -->
-<div id="templates" class="hidden">
 
-  <div class="t1-create-signin">
+<!----> <div id="templates" class="hidden">
 
+<div id="dialog" class="t1-create-signin">
     <x-tabbox>
-      <x-tabs>
-        <x-tab selected>Create Account</x-tab>
-        <x-tab>Sign In</x-tab>
+      <x-tabs class="clearfix">
+        <x-tab selected class="xt"><span class="xt_span">Create Account</span></x-tab>
+        <x-tab class="xt"><span class="xt_span">Sign In</span></x-tab>
       </x-tabs>
-      <x-tabpanels>
+      <x-tabpanels class="full_width">	
+      	
         <x-tabpanel selected="true" class="create-panel">
           <p class="error"></p>
+          <p>Use Firefox Sync to store your passwords, tabs, bookmarks, and browsing history.</p>
           <form class="create">
             <input type="text" name="email" class="email focus" placeholder="Email" /><span></span>
-            <br/>
-            <input type="password" name="password" class="password"  placeholder="Password (min 8 chars)"/><span></span>
-            <br/>
+           
+            <input type="password" name="password" class="password"  placeholder="Create Password"/><span></span>
+       
             <input type="password" name="password_confirm" class="confirm_password" placeholder="Confirm Password" /><span></span>
-            <p>By proceeding you agree with <a href="#">Terms of Service</a>
+            <p class="small_text">By proceeding you agree with <a href="#">Terms of Service</a>
               and <a href="#">Privacy Policy</a>
             </p>
 
@@ -46,129 +36,148 @@
           <form class="login">
             <input type="text" name="email" class="email focus" placeholder="Email" /><span></span>
             <br />
-            <input type="password" name="password" class="password"  placeholder="Password"/><span></span>
-            <p>
+            <input type="password" name="password" class="password" placeholder="Password"/><span></span>
+            <p class="small_text">
               <a href="#" class="forgot" data-page="reset-password">Forgot Password</a>
             </p>
-
-            <br/>
             <input type="submit" class="go" value="Sign In" />
           </form>
         </x-tabpanel>
       </x-tabpanels>
     </x-tabbox>
 
-  </div>
+ </div>
 
-  <div class="notes-t1-get-email">
-  </div>
+   
+   
+	<div class="notes-t1-get-email full_width"></div>
+	
+	<div class="t2-signed-in-page">
+	  	<div class="gap"></div>
+	    <h2 class="banner full_width">Welcome!</h2><br>
+	    <h3 class="small_banner full_width">You are successfully signed in as:
+	     <br> <span class="user" style="font-weight:bold">test</span></h3>   
+       <ul class='devices full_width'></ul> 
+		<div class="bluebox">
+			<div class="full_width">
 
-  <div class="t2-signed-in-page">
-      <h2>Welcome!<br/> You are successfully signed in as:</h2>
-        <p class="user">test</p>
+				<p id="progress-message">Syncing your data...</p>
+				<progress style="width:100%" id="progress-meter"></progress>
+				<p class="small_text">You may close this tab and keep browsing or go to <a href="#" class="prefs">Preferences</a> to manage your account.</p>
+			</div>
+		</div>
+	</div>
 
-        <ul class='devices'></ul>
+	<div class="notes-t2-get-password full_width"></div>
 
-        <p id="progress-message">Syncing your data...</p>
-        <progress id="progress-meter"></progress>
-        <p>You may close this tab and keep browsing or go to <a href="#" class="prefs">Preferences</a> to manage your account.</p>
-  </div>
+	<div class="verify full_width">
+		<div class="gap"></div>
+		<h2 class="banner">Confirm your email address</h2><br>
+		<h3 class="small_banner">Check your email at:
+		<br><span class='verify-email' style="font-weight:bold">abc</span>	
+		</h3>
+		<p class="small_text">Didn't get it? <a href="#" class="resend">Resend Email</a></p>
+	</div>
 
-  <div class="notes-t2-get-password">
-  </div>
+	<div class="verified full_width">
+		<div class="gap"></div>
+		<h2 class="banner">Email verified!</h2>
+		<h3 class="small_banner">Now go to Firefox and sign in!</h2>
+		<img class="aligncenter" src="/images/firefox.png" alt="firefox" />
+	</div>
 
-  <div class="verify">
-    <h2>Confirm your email address</h2>
-    <h3>Check your email at</h3>
-    <p>
-      <span class='verify-email'></span>.
-    </p>
-    <small>Didn't get it? <a href="#" class="resend">Resend Email</a>
-    </small>
-  </div>
 
-  <div class="badlink">
-    <h2>Could not confirm your email address</h2>
-    <p class="error">The link you followed has expired.</p>
-  </div>
 
-  <div class="verified">
-      <h3>Email verified!</h3>
-      <h3>Now go to Firefox and sign in!</h3>
-      <img src="/images/firefox.png" alt="firefox" />
-  </div>
+  
+  
 
-  <div class="reset-password">
+
+<!--###################DONE BELOW HERE################-->
+
+   <div class="reset-password full_width">
     <div class="progress"><span class="one active">1</span><span class="two">2</span><span class="three">3</span></div>
-    <p>
-      Reset your password
+      <strong>Reset Your Password</strong>
     </p>
     <p class="error"></p>
     <form class="reset">
-      <label>Your Email:
-        <input type="text" name="email" class="email focus" />
+      <label>
+        <input type="text" name="email" class="email focus" placeholder="Your Email Address"/>
       </label>
       <p>
-      <span class="right"><a href="#" class="cancel">Cancel</a> <input type="submit" class="go right" value="Next" /></span>
+      <input type="submit" class="go right" value="Reset Password" />
     </form>
   </div>
 
-  <div class="confirm-reset-code">
+  <div class="confirm-reset-code full_width">
     <div class="progress"><span class="one">1</span><span class="two active">2</span><span class="three">3</span></div>
     <p>
       <strong>We will send you an email to</strong> <span class="email"></span>
     </p>
+    <br>
     <p>
       <small>Didn't get it? <a href="#" class="resend">Resend Email</a></small>
     </p>
     <p class="error"></p>
     <form class="reset_code">
       <label><b>Copy the code in your email below:</b></label>
-        <input type="text" name="code" class="code focus" placeholder="XXXXXX" />
+        <input style="text-align:center" type="text" name="code" class="code focus" placeholder="XXXXXXXX" />
+        <input type="submit" value="next"></input>
       <p>
-      <input type="submit" class="go" value="Next" />
     </form>
   </div>
+  
 
-  <div class="new-password">
+  <div class="new-password full_width">
     <div class="progress"><span class="one">1</span><span class="two">2</span><span class="three active">3</span></div>
     <p class="error"></p>
     <form class="new_password">
       <p>
         Great, now create new password!
       </p>
-      <input type="password" name="password" placeholder="create password (min 8 chars)" class="focus password" /><span></span> <br/>
+      <input type="password" name="password" placeholder="create password" class="focus password" /><span></span> <br/>
       <input type="password" name="confirm_password" placeholder="repeat password" class="confirm_password" /><span></span>
       <p>
-      <span class="right"><input type="submit" class="go right" value="Reset" /></span>
+      <input type="submit" class="go right" value="Reset" />
     </form>
   </div>
 
-  <div class="reset-success">
-    <p>You reset your password successfully!
+  <div class="reset-success full_width">
+  	<div class="gap"></div>
+    <h2 class="block">You reset your password successfully!</h2>
     <p>Remember to sign in using your new password on your other devices so they can be all synced!
 
     <ul class="devices">
     </ul>
   </div>
 
-  <div class="preferences">
-      <h2>Preferences</h2>
+<!--###################DONE ABOVE HERE################-->
+
+
+  <div class="preferences full_width">
+		<div class="gap"></div>
+		<h2 class="banner">Preferences</h2>
 
       <div class="sync-prefs">
-        <h3>Account and Sync</h3>
-        <p>Signed in as: <span class="email"></span>
+        <h3 class="banner">Account and Sync</h3>
+        <h5>Account</h5>
+        <div class="clearfix">
+        <img class= "thumb" src="/images/usr.png" alt="usr" width="27" height="27" />
+        <p><span class="email">123456</span>
+        <!--<a href="#" class="change-password">Change password</a>-->
         </p>
+        </div>
+        <hr>
 
-        <button class="logout">Sign Out</button>
 
-        <h3>Data in account</h3>
+        <p class="small_text" style="text-align:right"><button class="logout">Sign Out</button></p>
+
+        <h5>Data in account</h5>
         <input type="checkbox" name="bookmarks" checked=true /> Bookmarks <br />
         <input type="checkbox" checked=true /> History <br />
         <input type="checkbox" checked=true /> Open Tabs <br />
         <input type="checkbox" checked=true /> Password <br />
 
-        <h3>Devices</h3>
+        <h5>Devices</h5>
         <fieldset>
           <ul class="devices">
           </ul>
@@ -176,11 +185,11 @@
       </div>
   </div>
 
-  <div class="preferences-signed-out">
-      <h2>Preferences</h2>
+  <div class="preferences-signed-out full_width">
+      <h2 class="banner">Preferences</h2>
 
       <div class="sync-prefs">
-        <h3>Account and Sync</h3>
+        <h3 class="banner">Account and Sync</h3>
         <p class="success">Successfully signed out</p>
         <p>Firefox is so cool (change me).</p>
 
@@ -189,8 +198,9 @@
       </div>
   </div>
 
-  <div class="notes-preferences">
+  <div class="notes-preferences full_width">
   </div>
+ 
 
 </div>
 

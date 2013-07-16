@@ -14,6 +14,11 @@ state.os = navigator.userAgent.match('Mac') ? 'mac' :
            navigator.userAgent.match('Android') ? 'android' :
           'linux';
 
+
+if (state.device === 'mobile' || state.device === 'tablet') {
+  window.location = window.location.toString().replace('flow', 'mobile');
+}
+
 // each device has a unique id
 state.deviceId = localStorage.getItem('deviceId');
 if (! state.deviceId) {
@@ -110,8 +115,7 @@ function refreshAccounts() {
       verifyLink = accounts[name].token ?
           (location.protocol + '//' + location.host +
           '/confirm_email?email=' + name +
-          '&token=' + accounts[name].token +
-          '&verifyLanding=' + state.flow.verifyLanding
+          '&token=' + accounts[name].token
           ) : '';
       // never do this in real code
       var s = ("<li>email: <b>"+name+"</b> / password: <b>"+

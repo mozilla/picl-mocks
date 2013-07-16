@@ -28,6 +28,7 @@ div#sidechannel-container {
   left: 5px;
   bottom: 5px;
   padding: 5px;
+  display: none;
 }
 
 div#notes-container {
@@ -39,6 +40,7 @@ div#notes-container {
   bottom: 5px;
   padding: 5px;
   overflow: auto;
+  display: none;
 }
 
 span.show-code {
@@ -225,6 +227,12 @@ form {
   margin-top: 50px;
 }
 
+.right a.cancel {
+  padding-right: 15px;
+  line-height: 30px;
+}
+
+
 .devices {
   list-style: none;
   padding-left: 0px;
@@ -259,6 +267,26 @@ form {
   background: url(/images/mobile.png) no-repeat;
 }
 
+.t2-signed-in-page {
+  text-align: center;
+}
+
+.t2-signed-in-page .devices {
+  padding-top: 30px;
+  margin: 0 auto;
+  text-align: left;
+  width: 300px;
+}
+
+.t2-signed-in-page .devices .desktop {
+  /*background: url(/images/desktop.png) no-repeat 50% 0;*/
+}
+
+.t2-signed-in-page .devices .mobile, .t2-signed-in-page .devices .tablet {
+  /*background: url(/images/mobile.png) no-repeat 50% 0;*/
+}
+
+
 .success {
   color: black;
   background: #cef;
@@ -269,7 +297,7 @@ form {
   text-align: center;
 }
 
-input::-moz-placeholder {
+.confirm-reset-code input::-moz-placeholder {
   color: #ccc;
 }
 
@@ -290,7 +318,7 @@ input {
   margin-bottom: 20px;
 }
 
-input.error {
+input.error, input.oops {
   background: #fcc;
 }
 
@@ -303,11 +331,23 @@ input.oops.invalid.email + span:after {
 }
 
 input.oops.invalid + span:after {
-  content: 'Password must be between 8 and 80 characters.';
+  content: 'Password must be at least 8 characters.';
 }
 
 input.oops.mismatch + span:after {
   content: 'These passwords don\'t match.';
+}
+
+input[type="text"].oops.missing + span:after {
+  content: 'Missing email';
+}
+
+input[type="password"].oops.missing + span:after {
+  content: 'Missing password';
+}
+
+input[type="password"].oops.missing_confirm + span:after {
+  content: 'Repeat password';
 }
 
 input.oops + span:after {
@@ -321,6 +361,7 @@ input.oops + span:after {
   right: -230px;
   padding: 5px 10px;
   font-size: 75%;
+  top: -23px;
   /*right: -200px;*/
   /*right: 100%;*/
 }

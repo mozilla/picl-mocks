@@ -70,6 +70,15 @@ function flowParams(params, session) {
 
 app.get('/',
   function(req, res) {
+    res.render('desktop_index', {
+      user: req.session.user,
+      verified: isVerified(req.session.user),
+      layout: false
+    });
+  });
+
+app.get('/m',
+  function(req, res) {
     res.render('index', {
       user: req.session.user,
       verified: isVerified(req.session.user),
@@ -79,11 +88,23 @@ app.get('/',
 
 app.get('/flow/:page?',
   function(req, res) {
+    res.render('desktop_flow', {
+      user: req.session.user,
+      verified: isVerified(req.session.user),
+      page: req.params.page,
+      flow: flowParams(req.query, req.session),
+      layout: 'desktop'
+    });
+  });
+
+app.get('/mobile/:page?',
+  function(req, res) {
     res.render('flow', {
       user: req.session.user,
       verified: isVerified(req.session.user),
       page: req.params.page,
-      flow: flowParams(req.query, req.session)
+      flow: flowParams(req.query, req.session),
+      layout: 'layout'
     });
   });
 
@@ -169,6 +190,13 @@ app.post('/api/login',
     var device = user === 'known' ? 'foo' : req.body.deviceId;
 
     if (accounts[user] && accounts[user].password === pass) {
+      if (! accounts[user].devices[device]) {
+        accounts[user].devices[device] = {
+          name: deviceName(req.body.os, req.body.device),
+          os: req.body.os,
+          form: req.body.device
+        };
+      }
       accounts[user].devices[device].syncing = true;
       accounts[user].devices[device].lastSync = Date.now();
       req.session.user = user;
