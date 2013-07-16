@@ -274,7 +274,7 @@ app.post('/api/new_password',
     if (!accounts[email]) {
       res.json(404, { success: false, message: "no_account" });
 
-    } else if (password != confirm_password) {
+    } else if (password !== confirm_password) {
       res.json(400, { success: false, message: "mismatch" });
 
     } else if (password) {

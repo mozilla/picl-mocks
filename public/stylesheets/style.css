@@ -227,6 +227,11 @@ form {
   margin-top: 50px;
 }
 
+.new-password a.cancel {
+  padding-right: 15px;
+  line-height: 30px;
+}
+
 
 .devices {
   list-style: none;
@@ -262,12 +267,23 @@ form {
   background: url(/images/mobile.png) no-repeat;
 }
 
+.t2-signed-in-page {
+  text-align: center;
+}
+
+.t2-signed-in-page .devices {
+  padding-top: 30px;
+  margin: 0 auto;
+  text-align: left;
+  width: 300px;
+}
+
 .t2-signed-in-page .devices .desktop {
-  background: url(/images/desktop.png) no-repeat 50% 0;
+  /*background: url(/images/desktop.png) no-repeat 50% 0;*/
 }
 
 .t2-signed-in-page .devices .mobile, .t2-signed-in-page .devices .tablet {
-  background: url(/images/mobile.png) no-repeat 50% 0;
+  /*background: url(/images/mobile.png) no-repeat 50% 0;*/
 }
 
 

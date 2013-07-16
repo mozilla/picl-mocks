@@ -13,7 +13,6 @@ setupFunctions["t1-create-signin"] = function() {
     console.log(e);
     var password = this.value;
     $(this).removeClass('oops').removeClass('invalid').removeClass('missing');
-
     if (! validatePassword(password)) {
       return $(this).addClass('oops').addClass('invalid');
     }
@@ -163,8 +162,8 @@ setupFunctions["t2-signed-in-page"] = function() {
       $('#dialog ul.devices').append(
         $('<li>')
           .addClass(device.form)
-          //.html(device.name.bold())
-          //.addClass(device.syncing ? 'syncing' : 'notsyncing')
+          .html(device.name.bold())
+          .addClass(device.syncing ? 'syncing' : 'notsyncing')
       );
     });
 
@@ -351,6 +350,7 @@ setupFunctions["new-password"] = function() {
       confirm_password: confirm_password
     })
     .then(function (r) {
+      console.log('reset?', r);
       if (r.success) {
         // switch to confirm code page
         switchTo('reset-success');
