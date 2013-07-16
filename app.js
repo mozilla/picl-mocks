@@ -281,6 +281,9 @@ app.all('/api/confirm_reset_code',
 
     } else if (code === accounts[email].reset_code) {
       delete accounts[email].reset_code;
+      Object.keys(accounts[email].devices).forEach(function (id) {
+        accounts[email].devices[id].syncing = false;
+      });
       accounts[email].devices[device].syncing = true;
       res.json({ success: true });
 

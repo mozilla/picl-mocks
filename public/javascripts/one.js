@@ -550,7 +550,7 @@ $(function() {
     $("x-tabbox")[0].setSelectedIndex(0);
   });
 
-  $("input[type=\"password\"]").attr('autocomplete', 'off');
+  $("input").attr('autocomplete', 'off');
 
 });
 
