@@ -15,7 +15,9 @@ state.os = navigator.userAgent.match('Mac') ? 'mac' :
           'linux';
 
 
-if (state.device === 'mobile' || state.device === 'tablet') {
+if ((state.device === 'mobile'
+    || state.device === 'tablet')
+    && window.location.toString().indexOf('/flow') !== -1) {
   window.location = window.location.toString().replace('flow', 'mobile');
 }
 
