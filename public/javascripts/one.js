@@ -1,3 +1,35 @@
+function passChecks() {
+  var error = false;
+  var passField = $("#dialog form input[name='password']");
+  var confirmField = $("#dialog form input.confirm_password");
+  var password = passField.val();
+  var passwordConfirm = confirmField.val();
+
+  $("#dialog form input[name='password'], #dialog form input.confirm_password")
+    .removeClass('oops')
+    .removeClass('ok')
+    .removeClass('mismatch')
+    .removeClass('missing_confirm')
+    .removeClass('missing')
+    .removeClass('invalid');
+
+  if (passwordConfirm.length && password !== passwordConfirm) {
+    confirmField.addClass('oops').addClass('mismatch');
+    error = true;
+  }
+
+  if (password.length && !validatePassword(password)) {
+    passField.addClass('oops').addClass('invalid');
+    error = true;
+  }
+
+  if (passwordConfirm.length && !validatePassword(passwordConfirm)) {
+    confirmField.addClass('oops').addClass('invalid');
+    error = true;
+  }
+
+  return !error;
+}
 
 setupFunctions["t1-create-signin"] = function() {
   $('#dialog form input.email').on('blur', function(e) {
@@ -10,29 +42,11 @@ setupFunctions["t1-create-signin"] = function() {
   });
 
   $('#dialog form input.password').on('blur', function(e) {
-    console.log(e);
-    var password = this.value;
-    $(this).removeClass('oops').removeClass('invalid').removeClass('missing');
-    if (! validatePassword(password)) {
-      return $(this).addClass('oops').addClass('invalid');
-    }
-    $(this).addClass('ok');
+    passChecks();
   });
 
   $('#dialog form input.confirm_password').on('blur', function(e) {
-    var password = this.value;
-    $(this)
-      .removeClass('oops')
-      .removeClass('mismatch')
-      .removeClass('missing_confirm')
-      .removeClass('invalid');
-    if (! validatePassword(password)) {
-      return $(this).addClass('oops').addClass('invalid');
-    }
-    if (password !== this.form.password.value) {
-      return $(this).addClass('oops').addClass('mismatch');
-    }
-    $(this).addClass('ok');
+    passChecks();
   });
 
   $('#dialog form.login').on("submit", function(e) {
@@ -84,13 +98,18 @@ setupFunctions["t1-create-signin"] = function() {
   $('#dialog form.create').on("submit", function(e) {
     var email = state.email = $("#dialog form.create input.email").val();
     var password = state.password = $("#dialog form.create input[name='password']").val();
-    var password_confirm = $("#dialog form.create input[name='password_confirm']").val();
+    var passwordConfirm = $("#dialog form.create input[name='password_confirm']").val();
     var error = false;
 
     e.preventDefault();
     leaveError();
-
-    console.log('passes', email, password, password_confirm);
+    $("#dialog form input[name='password'], #dialog form input.confirm_password")
+      .removeClass('oops')
+      .removeClass('ok')
+      .removeClass('mismatch')
+      .removeClass('missing_confirm')
+      .removeClass('missing')
+      .removeClass('invalid');
 
     if (! email.length) {
       $(this.email)
@@ -107,7 +126,7 @@ setupFunctions["t1-create-signin"] = function() {
         .addClass('missing');
       error = true;
     }
-    if (! password_confirm.length) {
+    if (! passwordConfirm.length) {
       $(this.password_confirm)
         .addClass('error')
         .addClass('oops')
@@ -115,12 +134,27 @@ setupFunctions["t1-create-signin"] = function() {
       error = true;
     }
 
-    if (error || password !== password_confirm) return false;
+    if (passwordConfirm.length && password !== passwordConfirm) {
+      $(this.password_confirm).addClass('oops').addClass('mismatch');
+      error = true;
+    }
+
+    if (password.length && !validatePassword(password)) {
+      $(this.password).addClass('oops').addClass('invalid');
+      error = true;
+    }
+
+    if (passwordConfirm.length && !validatePassword(passwordConfirm)) {
+      $(this.password_confirm).addClass('oops').addClass('invalid');
+      error = true;
+    }
+
+    if (error) return false;
 
     var creds = {
       email: state.email,
       password: state.password,
-      password_confirm: password_confirm,
+      password_confirm: passwordConfirm,
       device: state.device,
       os: state.os
     };
@@ -297,40 +331,30 @@ function validatePassword(pass) {
 }
 
 setupFunctions["new-password"] = function() {
+
   $('#dialog form input.password').on('blur', function(e) {
-    console.log(e);
-    var password = this.value;
-    $(this).removeClass('oops').removeClass('invalid')
-    .removeClass('missing');
-    if (! validatePassword(password)) {
-      return $(this).addClass('oops').addClass('invalid');
-    }
-    $(this).addClass('ok');
+    passChecks();
   });
 
   $('#dialog form input.confirm_password').on('blur', function(e) {
-    var password = this.value;
-    $(this)
-      .removeClass('oops')
-      .removeClass('mismatch')
-      .removeClass('missing_confirm')
-      .removeClass('invalid');
-    if (! validatePassword(password)) {
-      return $(this).addClass('oops').addClass('invalid');
-    }
-    if (password !== this.form.password.value) {
-      return $(this).addClass('oops').addClass('mismatch');
-    }
-    $(this).addClass('ok');
+    passChecks();
   });
 
   $('#dialog form.new_password').on('submit', function(e) {
     e.preventDefault();
     leaveError();
+    $("#dialog form input[name='password'], #dialog form input.confirm_password")
+      .removeClass('oops')
+      .removeClass('ok')
+      .removeClass('mismatch')
+      .removeClass('missing_confirm')
+      .removeClass('missing')
+      .removeClass('invalid');
+
     var error = false;
 
     var password = this.password.value;
-    var confirm_password = this.confirm_password.value;
+    var passwordConfirm = this.confirm_password.value;
 
     if (! password.length) {
       $(this.password)
@@ -341,7 +365,7 @@ setupFunctions["new-password"] = function() {
       error = true;
     }
 
-    if (! confirm_password.length) {
+    if (! passwordConfirm.length) {
       $(this.confirm_password)
         .addClass('error')
         .addClass('oops')
@@ -349,13 +373,28 @@ setupFunctions["new-password"] = function() {
       error = true;
     }
 
-    if (error || password !== confirm_password) return false;
+    if (passwordConfirm.length && password !== passwordConfirm) {
+      $(this.confirm_password).addClass('oops').addClass('mismatch');
+      error = true;
+    }
+
+    if (password.length && !validatePassword(password)) {
+      $(this.password).addClass('oops').addClass('invalid');
+      error = true;
+    }
+
+    if (passwordConfirm.length && !validatePassword(passwordConfirm)) {
+      $(this.confirm_password).addClass('oops').addClass('invalid');
+      error = true;
+    }
+
+    if (error) return false;
 
     // send code email
     send('new_password', {
       email: state.email,
       password: password,
-      confirm_password: confirm_password
+      confirm_password: passwordConfirm
     })
     .then(function (r) {
       console.log('reset?', r);

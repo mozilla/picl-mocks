@@ -147,6 +147,7 @@ function switchTo(which) {
     }
     currentlyShowing = which;
     console.log(which);
+    window.scrollTo(0, 0);
     var f = setupFunctions[which];
     if (f)
       f();
