@@ -190,6 +190,7 @@ function makeBusy() {
 function makeNotBusy() {
   $("#wrapper, #wrap").removeClass('busy');
   $('input[type="submit"]').attr('disabled','false');
+  window.scrollTo(0,0);
   $(".spinner").hide();
 }
 
