@@ -159,8 +159,10 @@ setupFunctions["t1-create-signin"] = function() {
       os: state.os
     };
 
+    makeBusy();
     send('create', creds)
       .then(function(r) {
+        makeNotBusy();
         console.log('response', r);
         if (r.success) {
           switchTo("verify");

@@ -175,6 +175,24 @@ function toggleAdmin() {
   $("#notes-container").toggle();
 }
 
+function isBusy() {
+  var wrap = $("#wrapper, #wrap");
+  if( wrap.hasClass("busy") ) return false;
+  else return true;
+}
+
+function makeBusy() {
+  $("#wrapper , #wrap").addClass('busy');
+  $('input[type="submit"]').attr('disabled','true');
+  $(".spinner").show();
+}
+
+function makeNotBusy() {
+  $("#wrapper, #wrap").removeClass('busy');
+  $('input[type="submit"]').attr('disabled','false');
+  $(".spinner").hide();
+}
+
 // konami code!
 Mousetrap.bind('up up down down left right left right b a enter', toggleAdmin);
 Mousetrap.bind('mod+e', toggleAdmin);

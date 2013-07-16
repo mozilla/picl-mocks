@@ -101,6 +101,18 @@ p a {
 	color: #44c2ff
 }
 
+p a:active {
+  color:#E66000;
+}
+
+p a:visited {
+  color: #00539F;
+}
+
+p a:visited {
+
+}
+
 /*HELPERS*/
 #wrapper {
   width:100%;
@@ -140,8 +152,8 @@ p a {
 }
 
 .small_text {
-	font-size: 12px;
-	line-height: 14px;
+	font-size: 13px;
+	line-height: 15px;
 }
 
 .bluebox {
@@ -354,6 +366,24 @@ h5 {
 
 .devices .mobile, .devices .tablet {
   background: url(/images/mobile.png) no-repeat;
+}
+
+#wrapper.busy {
+  opacity:.3;
+  
+}
+
+#wrapper.busy input[type="submit"] {
+  background: #9d9d9d;
+}
+
+.spinner {
+  height: 50px;
+  position: fixed;
+  width:100%;
+  background: url(/images/ajax-loader.gif) no-repeat center center;
+  z-index: 999999;
+  display: none;
 }
 
 /* ==========================================================================
