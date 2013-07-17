@@ -28,6 +28,10 @@ function passChecks() {
     error = true;
   }
 
+  if (error) {
+    offsetToError();
+  }
+
   return !error;
 }
 
@@ -36,7 +40,11 @@ setupFunctions["t1-create-signin"] = function() {
     var email = this.value;
     $(this).removeClass('oops').removeClass('invalid').removeClass('missing');
     if (! validateEmail(email)) {
-      return $(this).addClass('oops').addClass('invalid');
+
+       $(this).addClass('oops').addClass('invalid');
+       offsetToError();
+       return;
+      
     }
     $(this).addClass('ok');
   });
@@ -51,6 +59,7 @@ setupFunctions["t1-create-signin"] = function() {
 
   $('#dialog form.login').on("submit", function(e) {
     leaveError();
+    if(isBusy()) return false;
     e.preventDefault();
     var email = state.email = $("#dialog form.login input.email").val();
     var password = state.password = $("#dialog form.login input[name='password']").val();
@@ -74,8 +83,12 @@ setupFunctions["t1-create-signin"] = function() {
       error = true;
     }
 
-    if (error) return false;
+    if (error) {
+      offsetToError();
+      return false;
+    }
 
+    makeBusy();
     send('login', {
       email: state.email,
       password: state.password,
@@ -83,6 +96,7 @@ setupFunctions["t1-create-signin"] = function() {
       os: state.os
     })
       .then(function(r) {
+        makeNotBusy();
         console.log('response', r);
         if (r.success) {
           switchTo("t2-signed-in-page");
@@ -151,7 +165,10 @@ setupFunctions["t1-create-signin"] = function() {
       error = true;
     }
 
-    if (error) return false;
+    if (error) {
+      offsetToError();
+      return false;
+    }
 
     var creds = {
       email: state.email,

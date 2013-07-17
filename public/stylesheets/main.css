@@ -274,7 +274,7 @@ input[type="checkbox"] {
 }
 
 
-input.oops.invalid, input.oops.invalid {
+input.oops {
 	border: 1px solid #e75424;
 	background: #fdeee9;
 }

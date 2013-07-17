@@ -194,6 +194,17 @@ function makeNotBusy() {
   $(".spinner").hide();
 }
 
+function offsetToError() {
+  var off = 0;
+  if($("#wrapper p.error").html() != 0) {
+    off = $("#wrapper .error").offset();
+  } else {
+    off = $("#wrapper input.oops").offset();
+  }
+  console.log("Y OFFSET IS " + off.top);
+  window.scrollTo(0,off.top);
+}
+
 // konami code!
 Mousetrap.bind('up up down down left right left right b a enter', toggleAdmin);
 Mousetrap.bind('mod+e', toggleAdmin);
