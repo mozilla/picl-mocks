@@ -64,7 +64,8 @@ function enterError(selector, message) {
 }
 
 function leaveError() {
-  $('#dialog div.error, #dialog input.error').removeClass('error').removeClass('oops').removeClass('ok');
+  $('div.error, input.error, x-tabpanel.error').removeClass('error').removeClass('oops').removeClass('ok');
+  $('p.error').html('');
 }
 
 function send(verb, body) {

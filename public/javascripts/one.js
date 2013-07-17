@@ -99,8 +99,10 @@ setupFunctions["t1-create-signin"] = function() {
         makeNotBusy();
         console.log('response', r);
         if (r.success) {
+          leaveError();
           switchTo("t2-signed-in-page");
         } else {
+          console.log('WTF????', r);
           // show errors
           enterError('.login-panel', r.message);
         }
@@ -110,15 +112,15 @@ setupFunctions["t1-create-signin"] = function() {
   });
 
   $('#dialog form.create').on("submit", function(e) {
+    e.preventDefault();
+    leaveError();
     var email = state.email = $("#dialog form.create input.email").val();
     var password = state.password = $("#dialog form.create input[name='password']").val();
     var passwordConfirm = $("#dialog form.create input[name='password_confirm']").val();
-    var error = false;
-    
-    if(isBusy()) return false;
 
-    e.preventDefault();
-    leaveError();
+    if(isBusy()) return false;
+    var error = false;
+
     $("#dialog form input[name='password'], #dialog form input.confirm_password")
       .removeClass('oops')
       .removeClass('ok')
@@ -184,6 +186,7 @@ setupFunctions["t1-create-signin"] = function() {
         makeNotBusy();
         console.log('response', r);
         if (r.success) {
+          leaveError();
           switchTo("verify");
         } else {
           // show errors
@@ -481,6 +484,8 @@ setupFunctions["preferences"] = function() {
       showDevices();
     });
   }
+
+  leaveError();
 
 
   $("button.logout").on("click", function() {
