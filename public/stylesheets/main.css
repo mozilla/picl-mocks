@@ -309,6 +309,7 @@ input[type="password"].oops.missing_confirm + span:after {
 
 p.error {
 	background: #fdeee9;
+  display: none;
 }
 
 h5 {

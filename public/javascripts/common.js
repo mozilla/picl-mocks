@@ -189,20 +189,22 @@ function makeBusy() {
 
 function makeNotBusy() {
   $("#wrapper, #wrap").removeClass('busy');
-  $('input[type="submit"]').attr('disabled','false');
+  $('input[type="submit"]').removeAttr('disabled');
   window.scrollTo(0,0);
   $(".spinner").hide();
 }
 
 function offsetToError() {
-  var off = 0;
+  
+  var yOffset = 0;
+
   if($("#wrapper p.error").html() != 0) {
-    off = $("#wrapper .error").offset();
+    yOffset = $("#wrapper p.error").offset().top;
   } else {
-    off = $("#wrapper input.oops").offset();
+    yOffset = $("#wrapper input.oops").offset().top;
   }
-  console.log("Y OFFSET IS " + off.top);
-  window.scrollTo(0,off.top);
+  console.log("Y OFFSET IS " + yOffset);
+  window.scrollTo(0,yOffset);
 }
 
 // konami code!
